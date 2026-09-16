@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nen"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title"
+                    android:textColor="@color/chu"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/subtitle"
+                    android:textColor="@color/chu_nhat"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!-- Banh rang de nho va mo mau, nam sat le phai. Ba noi khong co viec
+                 gi o day; de no noi bat len thi thanh mot nut nua de bam nham. -->
+            <ImageButton
+                android:id="@+id/btnCaiDat"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cai_dat"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_cai_dat" />
+        </LinearLayout>
+
+        <!-- Sau nut duoc do vao day tu Defaults.MOC_PHUT, khong viet tay trong XML:
+             sua danh sach phut o mot cho la giao dien theo ngay. -->
+        <LinearLayout
+            android:id="@+id/boxNut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical" />
+
+        <!-- The thong bao: da cho xong, ngoai gio, chua noi nhom, hay gui hong. -->
+        <LinearLayout
+            android:id="@+id/boxThe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_the"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/txtTheTieuDe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/xong"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="Hôm nay xong rồi" />
+
+            <TextView
+                android:id="@+id/txtTheChiTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/chu"
+                android:textSize="19sp"
+                tools:text="Đã cho Lê Hòa chơi 30 phút, lúc 14:05." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThe"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="18dp"
+                android:textSize="19sp"
+                android:visibility="gone"
+                tools:text="Thử lại"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

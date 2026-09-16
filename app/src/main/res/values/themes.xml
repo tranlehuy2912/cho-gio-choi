@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.ChoGioChoi" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/nut</item>
+        <item name="colorOnPrimary">@color/nut_chu</item>
+        <item name="android:colorBackground">@color/nen</item>
+        <item name="android:textColorPrimary">@color/chu</item>
+        <item name="android:statusBarColor">@color/nen</item>
+        <item name="android:navigationBarColor">@color/nen</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!-- Khoa sang: app nay chi co mot man hinh sang, che do toi lam nut xanh
+             tren nen den kho nhin hon han voi mat gia. -->
+        <item name="isMaterial3Theme">true</item>
+    </style>
+</resources>

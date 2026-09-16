@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bang mau chon theo mat nguoi lon tuoi: nen sang, chu den dam, nut mot mau
+         duy nhat that dam. Khong dung mau nhat tren nen nhat o bat cu cho nao. -->
+    <color name="nen">#FFF7F2EC</color>
+    <color name="chu">#FF1B1B1B</color>
+    <color name="chu_nhat">#FF5C5850</color>
+
+    <color name="nut">#FF1F6F4A</color>
+    <color name="nut_chu">#FFFFFFFF</color>
+
+    <color name="the_nen">#FFFFFFFF</color>
+    <color name="the_vien">#FFDCD5CA</color>
+
+    <color name="xong">#FF1F6F4A</color>
+    <color name="hong">#FFB3261E</color>
+</resources>

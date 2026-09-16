@@ -1,0 +1,13 @@
+# Chep file nay thanh local.properties roi dien vao. File local.properties da nam
+# trong .gitignore nen khong bao gio len git.
+#
+# Dong sdk.dir do Android Studio tu ghi khi mo du an lan dau, khong phai dien tay.
+# Hai dong duoi phai dien Y HET ben homework-gate: app nay va app tren tablet
+# phai chung mot con bot thi ba bam nut ben nay tablet moi nghe thay.
+
+# BOT_THAT: token con bot that, ban release (dien thoai ba noi) dung.
+BOT_THAT=
+
+# BOT_MAY_AO: token con bot rieng cho ban go loi, de cai ban thu len may khong
+#             ban vao hop thu that.
+BOT_MAY_AO=

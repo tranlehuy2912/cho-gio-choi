@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cho giờ chơi</string>
+
+    <!-- De o day de sau nay doi ten khong phai lan tim trong ma nguon, giong
+         cach ben homework-gate dang lam. -->
+    <string name="child_name">Lê Hòa</string>
+
+    <string name="title">Cho Lê Hòa chơi</string>
+    <string name="subtitle">Mỗi ngày một lần</string>
+
+    <string name="nut_phut">%d phút</string>
+
+    <string name="dang_gui">Đang gửi…</string>
+    <string name="thu_lai">Thử lại</string>
+    <string name="cai_dat">Cài đặt</string>
+    <string name="huy">Huỷ</string>
+    <string name="xong">Xong</string>
+
+    <string name="xong_tieu_de">Hôm nay xong rồi</string>
+    <string name="xong_chi_tiet">Đã cho Lê Hòa chơi %1$d phút, lúc %2$s.</string>
+    <string name="xong_mai">Mai mới cho tiếp được.</string>
+
+    <string name="ngoai_gio_tieu_de">Ngoài giờ</string>
+    <string name="ngoai_gio_chi_tiet">Bây giờ là %1$s. Máy của Lê Hòa chỉ mở giờ chơi từ %2$s đến %3$s.</string>
+
+    <string name="chua_noi_tieu_de">Chưa nối hộp thư</string>
+    <string name="chua_noi_chi_tiet">Nhờ Ba Huy mở Cài đặt và dán mã hộp thư Telegram vào.</string>
+
+    <string name="hong_tieu_de">Chưa gửi được</string>
+
+    <!-- Man cai dat, nguoi doc la Ba Huy chu khong phai ba noi -->
+    <string name="cai_tieu_de">Cài đặt</string>
+    <string name="cai_huong_dan">Gõ /nhom trong Telegram — ở chat riêng với bot, hoặc trong một nhóm có bot làm quản trị viên. Tablet trả lời kèm mã, dán mã đó vào đây.</string>
+    <string name="cai_nhan_token">Token bot</string>
+    <string name="cai_o_token">123456789:AA…</string>
+    <string name="cai_nhan_nhom">Mã hộp thư</string>
+    <string name="cai_o_nhap">Ví dụ: 634689551</string>
+    <string name="cai_thieu_token">Chưa có token bot.</string>
+    <string name="cai_kiem_tra">Kiểm tra và lưu</string>
+    <string name="cai_dang_kiem">Đang kiểm tra…</string>
+    <string name="cai_xong">Đã nối bot @%1$s với hộp thư “%2$s”.</string>
+    <string name="cai_sai_so">Mã hộp thư phải là một dãy số. Mã nhóm thường bắt đầu bằng dấu trừ.</string>
+</resources>
