@@ -23,16 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/cai_nhan_token"
+            android:text="@string/cai_nhan_ma_nha"
             android:textColor="@color/chu"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edToken"
+            android:id="@+id/edMaNha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/cai_o_token"
+            android:hint="@string/cai_o_ma_nha"
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             android:maxLines="2"
@@ -43,19 +43,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/cai_nhan_nhom"
+            android:text="@string/cai_nhan_ma_ghep"
             android:textColor="@color/chu"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edNhom"
+            android:id="@+id/edMaGhep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/cai_o_nhap"
+            android:hint="@string/cai_o_ma_ghep"
             android:importantForAutofill="no"
-            android:inputType="numberSigned"
+            android:inputType="number"
+            android:maxLength="6"
             android:textColor="@color/chu"
             android:textSize="18sp" />
+
+        <!-- Cho bao tinh hinh: dang cho tablet ket nap, hay go sai ma. Khong dung
+             Toast vi hop thoai nay che gan het man hinh, Toast hien sau lung no. -->
+        <TextView
+            android:id="@+id/chuTinhHinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/chu_nhat"
+            android:textSize="15sp" />
+
+        <!-- Duong sang danh sach viec nha. De trong cai dat chu khong de ngoai man
+             chinh: ba noi khong sua danh sach nay, Ba Huy moi sua, va moi nam nay
+             chung mot lan. -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSuaViec"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/viec_sua_danh_sach"
+            android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

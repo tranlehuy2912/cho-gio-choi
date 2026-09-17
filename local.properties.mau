@@ -2,12 +2,10 @@
 # trong .gitignore nen khong bao gio len git.
 #
 # Dong sdk.dir do Android Studio tu ghi khi mo du an lan dau, khong phai dien tay.
-# Hai dong duoi phai dien Y HET ben homework-gate: app nay va app tren tablet
-# phai chung mot con bot thi ba bam nut ben nay tablet moi nghe thay.
-
-# BOT_THAT: token con bot that, ban release (dien thoai ba noi) dung.
-BOT_THAT=
-
-# BOT_MAY_AO: token con bot rieng cho ban go loi, de cai ban thu len may khong
-#             ban vao hop thu that.
-BOT_MAY_AO=
+#
+# App nay khong con bi mat nao de dien ca. Truoc kia phai dien token bot vao day,
+# vi app dat lenh bang cach sua mo ta mot nhom Telegram. Tu khi di duong Firestore
+# thi may ba chi co mot uid an danh - thu quyet dinh quyen han la no nam trong
+# uidsPhu tren Firestore, chu khong phai mot bi mat nap san trong file APK.
+#
+# Cai can co la app/google-services.json, xem ../homework-gate-3/CAI_DAT_FIREBASE.md.

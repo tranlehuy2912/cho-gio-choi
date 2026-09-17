@@ -11,6 +11,21 @@
 
     <string name="nut_phut">%d phút</string>
 
+    <!-- Viec nha -->
+    <string name="viec_tieu_de">Việc nhà</string>
+    <string name="viec_chua_giao">Chọn việc rồi bấm giao. Máy của Lê Hòa khoá đến khi bà bấm xong hết.</string>
+    <string name="viec_dang_giao">Lê Hòa làm xong việc nào thì bà bấm Xong việc đó.</string>
+    <string name="viec_giao_nut">Giao %1$d việc (%2$d phút)</string>
+    <string name="viec_xong">Xong</string>
+    <string name="viec_bo">Bỏ</string>
+    <string name="viec_da_xong">Đã xong</string>
+    <string name="viec_dang_gui">Đang gửi…</string>
+    <string name="viec_cho_nhan">Đã xong hết. Đang chờ máy của Lê Hòa nhận. Máy đang tắt thì bật lên rồi bấm Gửi lại.</string>
+    <string name="viec_gui_lai">Gửi lại cho máy của Lê Hòa</string>
+    <string name="viec_bo_het">Bỏ hết việc đã giao</string>
+    <string name="viec_sua_danh_sach">Sửa danh sách việc nhà</string>
+    <string name="viec_them">Thêm việc</string>
+
     <string name="dang_gui">Đang gửi…</string>
     <string name="thu_lai">Thử lại</string>
     <string name="cai_dat">Cài đặt</string>
@@ -24,21 +39,22 @@
     <string name="ngoai_gio_tieu_de">Ngoài giờ</string>
     <string name="ngoai_gio_chi_tiet">Bây giờ là %1$s. Máy của Lê Hòa chỉ mở giờ chơi từ %2$s đến %3$s.</string>
 
-    <string name="chua_noi_tieu_de">Chưa nối hộp thư</string>
-    <string name="chua_noi_chi_tiet">Nhờ Ba Huy mở Cài đặt và dán mã hộp thư Telegram vào.</string>
+    <string name="chua_noi_tieu_de">Chưa nối máy</string>
+    <string name="chua_noi_chi_tiet">Nhờ Ba Huy mở Cài đặt và nối máy này với máy của Lê Hòa.</string>
+    <string name="chua_noi_firebase">Bản app này chưa nối Firebase. Phải cài lại bản có google-services.json.</string>
 
     <string name="hong_tieu_de">Chưa gửi được</string>
 
     <!-- Man cai dat, nguoi doc la Ba Huy chu khong phai ba noi -->
-    <string name="cai_tieu_de">Cài đặt</string>
-    <string name="cai_huong_dan">Gõ /nhom trong Telegram — ở chat riêng với bot, hoặc trong một nhóm có bot làm quản trị viên. Tablet trả lời kèm mã, dán mã đó vào đây.</string>
-    <string name="cai_nhan_token">Token bot</string>
-    <string name="cai_o_token">123456789:AA…</string>
-    <string name="cai_nhan_nhom">Mã hộp thư</string>
-    <string name="cai_o_nhap">Ví dụ: 634689551</string>
-    <string name="cai_thieu_token">Chưa có token bot.</string>
-    <string name="cai_kiem_tra">Kiểm tra và lưu</string>
-    <string name="cai_dang_kiem">Đang kiểm tra…</string>
-    <string name="cai_xong">Đã nối bot @%1$s với hộp thư “%2$s”.</string>
-    <string name="cai_sai_so">Mã hộp thư phải là một dãy số. Mã nhóm thường bắt đầu bằng dấu trừ.</string>
+    <string name="cai_tieu_de">Nối máy</string>
+    <string name="cai_huong_dan">Trên máy tính bảng của Lê Hòa, mở màn ghép đôi. Nó hiện một mã nhà và một mã 6 số — gõ cả hai vào đây. Mã 6 số hết hạn sau mười phút.</string>
+    <string name="cai_nhan_ma_nha">Mã nhà</string>
+    <string name="cai_o_ma_nha">Dãy chữ và số dài</string>
+    <string name="cai_nhan_ma_ghep">Mã 6 số</string>
+    <string name="cai_o_ma_ghep">Ví dụ: 048213</string>
+    <string name="cai_thieu_ma_nha">Chưa có mã nhà.</string>
+    <string name="cai_sai_ma_ghep">Mã ghép phải đủ 6 số.</string>
+    <string name="cai_dang_cho">Đã gửi. Đang chờ máy của Lê Hòa nhận…</string>
+    <string name="cai_sai_ma">Mã 6 số sai hoặc đã hết hạn. Bấm lấy mã mới trên tablet rồi thử lại.</string>
+    <string name="cai_noi">Nối máy</string>
 </resources>

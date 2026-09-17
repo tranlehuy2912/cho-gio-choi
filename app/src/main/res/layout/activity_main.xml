@@ -67,6 +67,45 @@
             android:layout_marginTop="24dp"
             android:orientation="vertical" />
 
+        <!-- Viec nha. Do vao tu ViecNha, khong viet tay trong XML: danh sach viec
+             sua duoc trong Cai dat, sua xong la man hinh theo ngay.
+
+             Dat DUOI cac nut gio vi hai viec khac han nhau ve tan suat: nut gio la
+             viec moi ngay cua ba, con viec nha la thinh thoang. Cai hay dung nam
+             tren cung, khong phai cuon xuong tim. -->
+        <TextView
+            android:id="@+id/txtViecTieuDe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/viec_tieu_de"
+            android:textColor="@color/chu"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtViecPhuDe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/chu_nhat"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/boxViec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGiaoViec"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            android:textSize="19sp"
+            android:visibility="gone" />
+
         <!-- The thong bao: da cho xong, ngoai gio, chua noi nhom, hay gui hong. -->
         <LinearLayout
             android:id="@+id/boxThe"

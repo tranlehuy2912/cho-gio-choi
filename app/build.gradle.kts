@@ -15,21 +15,36 @@ val keystoreProps = Properties().apply {
 }
 val hasKeystore = keystorePropsFile.exists()
 
-// Token bot nam trong local.properties, file do khong bao gio vao git. Chua dien
-// thi van build duoc: BuildConfig nhan chuoi rong, app chay len se hoi ba dien tay.
-// Xem local.properties.mau.
-val biMatFile = rootProject.file("local.properties")
-val biMat = Properties().apply {
-    if (biMatFile.exists()) {
-        biMatFile.inputStream().use { load(it) }
-    }
+// Plugin google-services chi bat khi da co google-services.json, y het ben
+// homework-gate.
+//
+// Bat vo dieu kien thi may nao chua tai file ve la build do ngay tu dau. Thieu file
+// thi app nay van mo len duoc, chi la man nao cung bao "chua noi Firebase" thay vi
+// tat ngang.
+//
+// HAI DU AN FIREBASE, MOI BAN BUILD MOT CAI - dung ba file cua ben homework-gate,
+// vi ba app phai o cung mot du an moi nhin thay chung mot cai nha:
+//
+//   app/src/debug/google-services.json   du an THU  - may ao dung
+//   app/google-services.json             du an THAT - may ba noi dung
+//
+// Hai file nay khong phai ban sao cua ben homework-gate: moi applicationId la mot
+// "app" rieng trong cung du an Firebase. Vao console, them app Android
+// vn.huytl.chogiochoi vao dung du an do, roi tai file moi ve.
+val fileFirebaseThat = file("google-services.json")
+val fileFirebaseThu = file("src/debug/google-services.json")
+val coFirebase = fileFirebaseThat.exists() || fileFirebaseThu.exists()
+if (coFirebase) {
+    apply(plugin = "com.google.gms.google-services")
+} else {
+    logger.warn("Chua co app/google-services.json - ban build nay khong noi duoc sang tablet.")
 }
 
-// Doc mot dong trong local.properties ra dang chuoi Kotlin da boc san nhay kep,
-// vi buildConfigField nhan nguyen van doan ma chu khong nhan gia tri.
-fun chuoiBiMat(ten: String): String {
-    val v = (biMat.getProperty(ten) ?: "").trim()
-    return "\"" + v.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+if (coFirebase && !fileFirebaseThu.exists()) {
+    logger.warn(
+        "CHU Y: chua co app/src/debug/google-services.json, nen BAN GO LOI DANG NOI " +
+            "VAO DU AN FIREBASE THAT."
+    )
 }
 
 android {
@@ -45,8 +60,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "BOT_THAT", chuoiBiMat("BOT_THAT"))
-        buildConfigField("String", "BOT_MAY_AO", chuoiBiMat("BOT_MAY_AO"))
     }
 
     signingConfigs {
@@ -94,12 +107,14 @@ kotlin {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.material)
-    implementation(libs.okhttp)
     implementation(libs.coroutines.android)
 }

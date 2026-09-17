@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mot dong viec nha. Cao va chu to y nhu nut gio: nguoi bam la ba noi, khong
+     phai nguoi tre mat tot. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_the"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tenViec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/chu"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/phutViec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/chu_nhat"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nutPhu"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:minWidth="64dp"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nutChinh"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginStart="6dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="96dp"
+        android:textSize="19sp"
+        android:textStyle="bold" />
+</LinearLayout>
