@@ -186,6 +186,15 @@ object Duong {
      */
     const val F_CHAM_CLAUDE = "chamClaude"
 
+    /**
+     * Cac cau con khai truoc khi chup, kem de tung cau.
+     *
+     * Map { tenNguon, bai, mon, onTap, cac: [{ ma, cauId, de, dang }] }. Tablet ghi luc
+     * con nop. Co no thi loi nho gui Claude co de bai ngay ca khi may khong cham, va ket
+     * qua Claude cham ve khop duoc voi dung cau trong sach.
+     */
+    const val F_KHAI = "khai"
+
     // --- truong trong chat/{id} ---
     const val F_TU = "tu"
     const val F_DA_DOC = "daDoc"
@@ -298,6 +307,20 @@ object Lenh {
      * Chi Ba Huy go duoc. May ba noi chi co lenh [CHO].
      */
     const val SUA_CHAM = "SUACHAM"
+
+    /**
+     * Cham bai theo ket qua Claude, dung khi may chua cham bai do: tablet tat cham AI,
+     * hay AI hong luc con nop.
+     *
+     * Kem [Duong.F_BAI_ID]. "giaTri" la { cac, ngayDanDo, baiDuocGiao, lamHetDanDo,
+     * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, mucDo, de, dang,
+     * trongDanDo }]. Tablet chay dung cac buoc nhu luc AI cham xong: tinh phut theo luat,
+     * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
+     * duyet.
+     *
+     * Khac [SUA_CHAM]: lenh kia sua mot ban cham da co, lenh nay la ban cham dau tien.
+     */
+    const val CHAM_BAI = "CHAMBAI"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
