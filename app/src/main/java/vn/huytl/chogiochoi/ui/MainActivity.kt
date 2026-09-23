@@ -2,7 +2,6 @@ package vn.huytl.chogiochoi.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +20,7 @@ import vn.huytl.chogiochoi.data.Nha
 import vn.huytl.chogiochoi.data.ViecNha
 import vn.huytl.chogiochoi.databinding.ActivityMainBinding
 import vn.huytl.chogiochoi.databinding.DialogCaiDatBinding
+import vn.huytl.chogiochoi.databinding.DongSuaViecBinding
 import vn.huytl.chogiochoi.databinding.ItemNutBinding
 import vn.huytl.chogiochoi.databinding.ItemViecBinding
 import java.text.SimpleDateFormat
@@ -181,6 +181,7 @@ class MainActivity : AppCompatActivity() {
     /** Ve lai toan bo man hinh theo tinh hinh hien tai. */
     private fun veLai() {
         veViecNha()
+        xepLaiKhoi()
         val the = binding
         when {
             dangGui -> hienThe(
@@ -270,6 +271,32 @@ class MainActivity : AppCompatActivity() {
             binding.btnThe.text = nhanNut
             binding.btnThe.setOnClickListener { khiBam() }
         }
+    }
+
+    /**
+     * Dang co dot viec chay thi day khoi viec nha len tren cac nut gio.
+     *
+     * Binh thuong nut gio o tren vi do la viec moi ngay cua ba, con viec nha thi
+     * thinh thoang. Nhung tu luc giao mot dot, cai ba can bam lai nam trong khoi
+     * viec - ma no o duoi day, phai cuon xuong moi toi, va cuon la thu kho nhat
+     * voi nguoi khong quen dung dien thoai.
+     */
+    private fun xepLaiKhoi() {
+        val dangGiao = ViecNha.dangGiao(this).isNotEmpty()
+        val cot = binding.boxNut.parent as? LinearLayout ?: return
+        val viTriNut = cot.indexOfChild(binding.boxNut)
+        val viTriTieuDe = cot.indexOfChild(binding.txtViecTieuDe)
+        if (viTriNut < 0 || viTriTieuDe < 0) return
+        // Dang dung thu tu can roi thi thoi: doi cho view moi lan ve lai la moi lan
+        // ban phim va con tro nhay mot cai.
+        if (dangGiao == (viTriTieuDe < viTriNut)) return
+
+        val khoiViec = listOf(
+            binding.txtViecTieuDe, binding.txtViecPhuDe, binding.boxViec, binding.btnGiaoViec
+        )
+        khoiViec.forEach { cot.removeView(it) }
+        val dat = if (dangGiao) cot.indexOfChild(binding.boxNut) else cot.indexOfChild(binding.boxThe)
+        khoiViec.forEachIndexed { i, v -> cot.addView(v, dat + i) }
     }
 
     private fun batNut(bat: Boolean) {
@@ -508,8 +535,8 @@ class MainActivity : AppCompatActivity() {
      * Nguoi doc man nay la Ba Huy. Ba noi chi bam cac nut o man chinh, khong bao gio
      * vao day.
      *
-     * Khong co nut xoa rieng: de trong o ten la viec do bien mat khi luu. Mot nut
-     * xoa nua tren moi dong lam man hinh day nut ma viec thi hiem khi phai lam.
+     * Moi dong co mot nut xoa. Truoc day khong co, va cach bo mot viec la de trong
+     * o ten roi bam Xong - mot quy uoc khong ghi o dau tren man hinh ca.
      */
     private fun hoiCaiDatViec() {
         val cot = LinearLayout(this).apply {
@@ -517,43 +544,38 @@ class MainActivity : AppCompatActivity() {
             val p = (20 * resources.displayMetrics.density).toInt()
             setPadding(p, p / 2, p, 0)
         }
-        val oTen = mutableListOf<EditText>()
-        val oPhut = mutableListOf<EditText>()
+        val cacDong = mutableListOf<DongSuaViecBinding>()
 
-        fun themHang(ten: String, phut: Int) {
-            val hang = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-            val a = EditText(this).apply {
-                setText(ten)
-                hint = "Tên việc"
-                setSingleLine()
-                textSize = 17f
-                layoutParams = LinearLayout.LayoutParams(0, -2, 1f)
+        fun themHang(ten: String, phut: Int, viTri: Int = -1): DongSuaViecBinding {
+            val d = DongSuaViecBinding.inflate(layoutInflater, cot, false)
+            d.oTen.setText(ten)
+            d.oPhut.setText(phut.toString())
+            d.nutXoa.setOnClickListener {
+                cot.removeView(d.root)
+                cacDong.remove(d)
             }
-            val b = EditText(this).apply {
-                setText(phut.toString())
-                hint = "phút"
-                setSingleLine()
-                textSize = 17f
-                inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                layoutParams = LinearLayout.LayoutParams(
-                    (72 * resources.displayMetrics.density).toInt(), -2
-                )
-            }
-            oTen += a
-            oPhut += b
-            hang.addView(a)
-            hang.addView(b)
-            cot.addView(hang)
+            cacDong += d
+            if (viTri < 0) cot.addView(d.root) else cot.addView(d.root, viTri)
+            return d
         }
 
         ViecNha.danhSach(this).forEach { themHang(it.ten, it.phut) }
 
-        cot.addView(
-            android.widget.Button(this).apply {
-                text = getString(R.string.viec_them)
-                setOnClickListener { themHang("", 10) }
+        // Nut them nam duoi cung, va hang moi chen vao ngay truoc no.
+        val nutThem = MaterialButton(
+            this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
+        ).apply {
+            text = getString(R.string.viec_them)
+            textSize = 16f
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener {
+                themHang("", 10, cot.childCount - 1).oTen.requestFocus()
             }
-        )
+        }
+        cot.addView(nutThem)
 
         val cuon = ScrollView(this).apply { addView(cot) }
 
@@ -561,10 +583,10 @@ class MainActivity : AppCompatActivity() {
             .setTitle(R.string.viec_sua_danh_sach)
             .setView(cuon)
             .setPositiveButton(R.string.xong) { _, _ ->
-                val moi = oTen.indices.mapNotNull { i ->
-                    val ten = oTen[i].text.toString().trim()
+                val moi = cacDong.mapNotNull { d ->
+                    val ten = d.oTen.text.toString().trim()
                     if (!ViecNha.tenHopLe(ten)) return@mapNotNull null
-                    val phut = oPhut[i].text.toString().trim().toIntOrNull() ?: 10
+                    val phut = d.oPhut.text.toString().trim().toIntOrNull() ?: 10
                     ViecNha.Viec(ten, phut.coerceIn(0, 240))
                 }
                 if (moi.isNotEmpty()) ViecNha.datDanhSach(this, moi)
@@ -573,6 +595,7 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButton(R.string.huy, null)
             .show()
     }
+
 
     /**
      * Ghep may nay voi may cua chau. Nguoi doc man nay la Ba Huy, khong phai ba noi.

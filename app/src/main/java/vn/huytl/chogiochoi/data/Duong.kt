@@ -110,7 +110,30 @@ object Duong {
     const val F_DANG_SAC = "dangSac"
     const val F_BAN_APP = "banApp"
     const val F_CAP_NHAT_LUC = "capNhatLuc"
+
+    /**
+     * Ten app dang tren man hinh tablet: "YouTube", hay "YouTube + Zalo" khi chia
+     * doi man hinh. Rong la khong mo app nao - dang o man hinh chinh hay man khoa.
+     *
+     * Tablet ghi lai moi lan doi app, khong doi nhip tim.
+     *
+     * LUON LA CHUOI, khong duoc doi kieu. Ban Bang dieu khien dau tien doc truong
+     * nay bang getString, ma getString gap kieu khac thi nem loi ngay trong luc doc
+     * trang thai: app ben dien thoai chet moi lan tablet day len. Can them thong tin
+     * thi them truong moi nhu hai truong duoi - ban cu gap truong la chi bo qua.
+     */
     const val F_APP_TRUOC_MAT = "appTruocMat"
+
+    /** Luc mo app do, theo gio tablet. 0 la khong co app nao. */
+    const val F_APP_TRUOC_MAT_TU = "appTruocMatTu"
+
+    /**
+     * Man hinh tablet dang sang hay tat.
+     *
+     * Vang truong nay nghia la khong biet: tablet ban cu, hoac dich vu canh app dang
+     * khong chay nen khong ai nhin thay tren man hinh co gi.
+     */
+    const val F_MAN_HINH_SANG = "manHinhSang"
 
     /** Cau tablet noi lai sau khi lam mot lenh: { chu, luc, ai }. */
     const val F_TRA_LOI = "traLoi"
@@ -236,6 +259,24 @@ object Lenh {
      * Kem so phut o [Duong.F_PHUT] va danh sach ten viec o [Duong.F_CHU].
      */
     const val CONG_VIEC_NHA = "CONGVIECNHA"
+
+    /**
+     * Hoi tablet mot cau duy nhat: con song khong, va trang thai that bay gio la gi.
+     *
+     * VI SAO CAN. Tablet tu day trang thai moi lan co gi doi, cong them mot nhip
+     * tim thua cho nhung luc khong co gi doi. Nhip tim do chay bang Handler, ma
+     * Handler dem theo dong ho DUNG LAI khi CPU ngu - nen mot tablet nam im tren
+     * ban ca buoi toi co the khong day gi trong nhieu tieng. Khong phai no chet,
+     * chi la khong co gi de noi va khong ai hoi.
+     *
+     * Bang dieu khien mo ra thi go lenh nay. Tablet nghe qua listener nam san trong
+     * dich vu tro nang, day mot ban trang thai day du, va man hinh ben kia co so
+     * lieu dung cua GIAY NAY thay vi mot dong "so lieu co the cu".
+     *
+     * Khong tra loi gi vao o traLoi: day khong phai viec Ba Huy bam, khong co gi de
+     * bao. Ban trang thai moi chinh la cau tra loi.
+     */
+    const val PING = "PING"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
