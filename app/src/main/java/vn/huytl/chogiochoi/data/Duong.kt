@@ -177,6 +177,15 @@ object Duong {
     const val F_FILE_ID = "fileId"
     const val F_KHAU = "khau"
 
+    /**
+     * Ket qua Claude cham lai, Ba Huy dan tu app Claude vao Bang dieu khien.
+     *
+     * Mot map { luc, cac: [{ ma, dung, chac, conViet, goiY }] }. Nam canh [F_CHAM]
+     * chu khong ghi de len no: ban cham cua may van giu nguyen de doi chieu, con man
+     * ket qua tren tablet thi hien ket luan cua Claude khi co.
+     */
+    const val F_CHAM_CLAUDE = "chamClaude"
+
     // --- truong trong chat/{id} ---
     const val F_TU = "tu"
     const val F_DA_DOC = "daDoc"
@@ -277,6 +286,18 @@ object Lenh {
      * bao. Ban trang thai moi chinh la cau tra loi.
      */
     const val PING = "PING"
+
+    /**
+     * Sua ban cham: nhung cau may bao sai ma Claude cham lai la dung.
+     *
+     * Kem [Duong.F_BAI_ID], va danh sach cau o truong "giaTri": [{ ma, de }]. Tablet
+     * chi sua cau dang cho sua, tinh phut theo dung luat cong gio nhu luc may tu cham,
+     * roi cap gio va ghi so. Cau da duoc tra gio thi bo qua, nen gui lai lenh nay cung
+     * khong cong gio hai lan.
+     *
+     * Chi Ba Huy go duoc. May ba noi chi co lenh [CHO].
+     */
+    const val SUA_CHAM = "SUACHAM"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
