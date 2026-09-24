@@ -4,14 +4,14 @@ package vn.huytl.chogiochoi.data
  * Ten duong dan va ten truong trong Firestore.
  *
  * QUAN TRONG: file nay co BA ban sao phai giong het nhau:
- *  - vn.huytl.homeworkgate.dongbo.Duong  (tablet, homework-gate)
- *  - vn.huytl.bangdieukhien.data.Duong   (dien thoai Ba Huy, homework-gate-3)
- *  - vn.huytl.chogiochoi.data.Duong      (may ba noi, homework-gate-2)
+ *  - vn.huytl.homeworkgate.dongbo.Duong  (tablet, nop-bai)
+ *  - vn.huytl.bangdieukhien.data.Duong   (dien thoai Ba Huy, bang-dieu-khien)
+ *  - vn.huytl.chogiochoi.data.Duong      (may ba noi, cho-gio-choi)
  *
  * Doi mot chuoi o mot ben thoi la ba app noi ba thu tieng: lenh gui di khong ai
  * nhan, trang thai doc ve luon rong, va khong co gi bao loi ca - do la kieu hong
  * kho tim nhat. Khong co trinh bien dich nao bat duoc, nen sua o day xong thi
- * chay homework-gate/tools/kiem-duong.sh de so ca ba ban.
+ * chay nop-bai/tools/kiem-duong.sh de so ca ba ban.
  */
 object Duong {
 
