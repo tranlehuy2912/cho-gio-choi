@@ -321,6 +321,19 @@ object Lenh {
      * Khac [SUA_CHAM]: lenh kia sua mot ban cham da co, lenh nay la ban cham dau tien.
      */
     const val CHAM_BAI = "CHAMBAI"
+
+    /**
+     * Dua mot tin cua co giao len man chinh tablet, muc "Tin cua co". Giong het lenh
+     * /tinco ben Telegram.
+     *
+     * Ba Huy chep tin trong nhom lop Zalo roi dan vao Bang dieu khien. Noi dung o
+     * [Duong.F_CHU]. Khac [NHAN]: tin khong vao khung chat cua con ma vao kho tin cua
+     * co, noi ba noi cam tablet len cung doc duoc.
+     *
+     * Khong bi bo vi qua [Duong.QUA_CU_MS] nhu cac lenh khac: tin gui toi qua ma sang
+     * nay tablet moi mo may thi van phai hien, va hien dung gio Ba Huy gui.
+     */
+    const val TIN_CO = "TINCO"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
