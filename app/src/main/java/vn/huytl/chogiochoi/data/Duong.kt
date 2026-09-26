@@ -37,7 +37,7 @@ object Duong {
     const val D_DANH_SACH_APP = "danhsachapp"
 
     /**
-     * Viec nha ba noi giao. Mot document, khong phai mot muc trong hang lenh.
+     * Dot viec nha dang giao. Mot document, khong phai mot muc trong hang lenh.
      *
      * Vi day la TRANG THAI day du chu khong phai su kien: ca danh sach viec lan
      * viec nao da xong nam gon trong mot ban. Doc lai cung mot ban muoi lan cung
@@ -46,6 +46,11 @@ object Duong {
      *
      * Lenh cho gio thi nguoc lai - mot su kien, lam xong la xoa - nen no nam trong
      * [LENH].
+     *
+     * HAI DIEN THOAI CUNG GHI: may ba noi va Bang dieu khien. Moi lan bam la mot
+     * transaction doc ban tren may chu, sua dung viec vua bam roi moi ghi. Ghi de ca
+     * ban tu bo nho rieng cua tung may thi hai nguoi bam gan nhau la cai bam truoc
+     * mat, va tablet khoa lai vi mot viec da co nguoi bao xong.
      */
     const val D_VIEC_NHA = "viecnha"
 
@@ -57,6 +62,26 @@ object Duong {
      * vở" khi ban do chi co anh (chuaDoc), roi gui ket qua ve bang lenh [Lenh.DOC_VO].
      */
     const val D_DAN_DO = "dando"
+
+    /**
+     * Danh sach viec de chon khi giao: ten va so phut, o truong [F_VIEC].
+     *
+     * Bang dieu khien ghi. May ba chi doc, va duoc tao document nay dung mot lan khi
+     * no chua co, bang danh sach dang nam trong may ba - ban app truoc giu danh sach
+     * o do, Ba Huy sua bang cach cam may ba. Luat ben firestore.rules chan may ba sua
+     * mot danh sach da co.
+     */
+    const val D_DANH_SACH_VIEC = "danhsachviec"
+
+    /**
+     * Danh sach viec dai nhat bay nhieu, cung la so viec nhieu nhat mot dot.
+     *
+     * Hai man hinh quyet con so nay: man may ba ke het danh sach, ma cuon xuong la
+     * thu kho nhat voi ba; man chan tablet ke het viec chua xong, dai hon nam dong thi
+     * Le Hoa doc khong vao. Bang dieu khien khong cho luu dai hon, may ba chi hien
+     * ngan nay.
+     */
+    const val TOI_DA_VIEC = 5
 
     const val LENH = "lenh"
     const val BAI = "bai"
@@ -109,8 +134,8 @@ object Duong {
      * no, Bang dieu khien chi thay "dang tam dung" trong khi tablet bi che kin va
      * khong ai biet vi sao.
      *
-     * Khac [D_VIEC_NHA]: cho kia la ban ba noi ghi xuong de giao viec, cho nay la
-     * tablet noi lai da nhan duoc gi.
+     * Khac [D_VIEC_NHA]: cho kia la ban hai dien thoai ghi xuong de giao viec, cho
+     * nay la tablet noi lai da nhan duoc gi.
      */
     const val F_VIEC_NHA = "viecNha"
     const val F_CHE_DO_BA = "cheDoBa"
@@ -163,15 +188,22 @@ object Duong {
      *
      * Thieu truong nay thi coi la Ba Huy: ban Bang dieu khien cu chua gui gi ca, ma
      * may ba thi luon gui.
+     *
+     * Trong hop/viecnha truong nay la nguoi giao dot do, va nguoc lai: thieu thi coi
+     * la ba noi, vi truoc khi Bang dieu khien giao duoc viec thi chi may ba ghi o do.
+     * O day no chi de tablet goi dung nguoi giao, khong mo them quyen gi.
      */
     const val F_AI = "ai"
 
     // --- truong trong hop/viecnha ---
 
-    /** Ma mot dot giao viec. Doi ma nghia la ba giao dot moi, khong phai sua dot cu. */
+    /** Ma mot dot giao viec. Doi ma nghia la giao dot moi, khong phai sua dot cu. */
     const val F_MA_PHIEN = "maPhien"
 
-    /** Danh sach viec: [{ ten, phut, xong }]. Rong nghia la ba bo het. */
+    /**
+     * Danh sach viec. Trong hop/viecnha: [{ ten, phut, xong }], rong nghia la da bo
+     * het. Trong hop/danhsachviec: [{ ten, phut }].
+     */
     const val F_VIEC = "viec"
     const val F_TEN = "ten"
     const val F_XONG = "xong"
@@ -298,6 +330,10 @@ object Lenh {
      * Ba bam xong het trong luc tablet dang tat, den luc no song lai thi ban da qua
      * [Duong.QUA_CU_MS] nen no bo qua - va ba thi khong con nut nao de gui lai. Bang
      * dieu khien nhin thay canh do va go lenh nay thay.
+     *
+     * Tu khi Bang dieu khien cung ghi duoc hop/viecnha, no khong go lenh nay nua: no
+     * bam Gui lai nhu may ba, tuc la ghi lai moc luc cua dot do, va tablet cong theo
+     * duong thuong. Tablet van nhan lenh nay, de ban Bang dieu khien cu con dung duoc.
      *
      * Khac [CHO] o dung mot cho, ma cho do la ly do no ton tai: nhat ky ghi "Xong
      * viec nha (quet nha, rua chen): +20 phut" chu khong phai "Ba Huy cho 20 phut".

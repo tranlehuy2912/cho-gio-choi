@@ -70,16 +70,17 @@
             android:textColor="@color/chu_nhat"
             android:textSize="15sp" />
 
-        <!-- Duong sang danh sach viec nha. De trong cai dat chu khong de ngoai man
-             chinh: ba noi khong sua danh sach nay, Ba Huy moi sua, va moi nam nay
-             chung mot lan. -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSuaViec"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
+        <!-- Truoc day o day co nut sua danh sach viec nha. Danh sach gio nam tren
+             Firestore, dung chung voi Bang dieu khien, va Ba Huy sua ben do. Dong nay
+             noi cho Ba Huy biet phai tim o dau, khoi mo may ba ra tim. -->
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/viec_sua_danh_sach"
-            android:textSize="16sp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/viec_sua_o_bang"
+            android:textColor="@color/chu_nhat"
+            android:textSize="15sp" />
     </LinearLayout>
 </ScrollView>

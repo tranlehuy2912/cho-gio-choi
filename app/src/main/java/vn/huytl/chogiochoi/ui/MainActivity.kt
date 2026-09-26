@@ -2,7 +2,6 @@ package vn.huytl.chogiochoi.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ScrollView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -14,13 +13,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.ListenerRegistration
 import vn.huytl.chogiochoi.R
 import vn.huytl.chogiochoi.data.Defaults
+import vn.huytl.chogiochoi.data.Duong
 import vn.huytl.chogiochoi.data.Kho
 import vn.huytl.chogiochoi.data.LuotNgay
+import vn.huytl.chogiochoi.data.Nguoi
 import vn.huytl.chogiochoi.data.Nha
 import vn.huytl.chogiochoi.data.ViecNha
 import vn.huytl.chogiochoi.databinding.ActivityMainBinding
 import vn.huytl.chogiochoi.databinding.DialogCaiDatBinding
-import vn.huytl.chogiochoi.databinding.DongSuaViecBinding
 import vn.huytl.chogiochoi.databinding.ItemNutBinding
 import vn.huytl.chogiochoi.databinding.ItemViecBinding
 import java.text.SimpleDateFormat
@@ -42,13 +42,34 @@ class MainActivity : AppCompatActivity() {
 
     private var dangGui = false
 
-    /** Dang gui trang thai viec nha. Tach khoi [dangGui] vi hai duong doc lap. */
+    /** Dang gui mot lan bam viec nha. Tach khoi [dangGui] vi hai duong doc lap. */
     private var dangGuiViec = false
 
-    /** Cac viec ba dang tich de giao, khi chua co phien nao chay. */
+    /** Cac viec ba dang tich de giao, khi chua co dot nao chay. */
     private val daChonViec = linkedSetOf<String>()
 
     private var loiViec = ""
+
+    /**
+     * Dot viec dang giao, doc tu Firestore. null la khong co dot nao.
+     *
+     * Man hinh ve theo cai nay chu khong theo mot ban giu trong may: Ba Huy cung giao
+     * va bam xong duoc ben Bang dieu khien, va ba phai thay ngay cai ben do vua bam.
+     */
+    private var dot: ViecNha.Dot? = null
+
+    /** Danh sach viec chung tren Firestore. null la chua doc duoc, dung ban trong may. */
+    private var danhSachChung: List<ViecNha.Viec>? = null
+    private var ngheDanhSach: ListenerRegistration? = null
+
+    /**
+     * Firestore da tra ban dau tien cua dot viec chua, tu luc mo app.
+     *
+     * Chua thi khoi viec nha chua hien gi: ve truoc la ra danh sach de chon, roi mot
+     * nhip sau doi sang dot dang chay va ca khoi nhay len tren nut gio - dung luc ba
+     * dang dua tay toi mot nut.
+     */
+    private var daCoDot = false
 
     /** Con so vua bam, giu lai de nut "Thu lai" biet gui lai bao nhieu phut. */
     private var phutVuaBam = 0
@@ -65,13 +86,6 @@ class MainActivity : AppCompatActivity() {
     private var traLoiLuc = 0L
     private var ngheTraLoi: ListenerRegistration? = null
 
-    /**
-     * Nghe xem dot viec nha con nam tren Firestore khong.
-     *
-     * Con nghia la chua ai nhan - tablet dang tat, hay no bo qua vi ban qua cu. Luc
-     * do ba con nut de gui lai. Tablet nhan va khep xong thi no xoa document, va do
-     * moi la luc bo dot viec trong may nay di.
-     */
     private var ngheViecNha: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +116,8 @@ class MainActivity : AppCompatActivity() {
         ngheTraLoi = null
         ngheViecNha?.remove()
         ngheViecNha = null
+        ngheDanhSach?.remove()
+        ngheDanhSach = null
         super.onPause()
     }
 
@@ -115,7 +131,11 @@ class MainActivity : AppCompatActivity() {
     private fun batNghe() {
         ngheTraLoi?.remove()
         ngheViecNha?.remove()
-        if (!Nha.daGhep(this)) return
+        ngheDanhSach?.remove()
+        if (!Nha.daGhep(this)) {
+            daCoDot = true
+            return
+        }
 
         ngheTraLoi = Kho.ngheTraLoi(this) { tra ->
             if (tra.luc <= traLoiLuc) return@ngheTraLoi
@@ -124,17 +144,19 @@ class MainActivity : AppCompatActivity() {
             veLai()
         }
 
-        /*
-         * Document con nam do nghia la chua ai nhan; mat di nghia la tablet da khep
-         * dot viec lai.
-         *
-         * Bo qua trong luc dang gui: Firestore bao lai ban vua ghi ngay tren may nay
-         * truoc khi len toi may chu, va mot ban "khong ton tai" con dang bay ve tu
-         * truoc do co the toi sau - luc ay no se xoa mat dot ba vua giao.
-         */
-        ngheViecNha = Kho.ngheViecNha(this) { conDo ->
-            if (dangGuiViec) return@ngheViecNha
-            if (!conDo) ViecNha.xoaPhien(this)
+        // Dot viec con nam do nghia la chua ai nhan; mat di nghia la tablet da khep
+        // no lai. Ca nhung gi Ba Huy vua giao hay vua bam cung ve qua day.
+        ngheViecNha = Kho.ngheViecNha(this) { moi ->
+            // Sang dot khac thi cau bao hong cua lan bam truoc khong con noi ve cai gi
+            // tren man hinh nua.
+            if (moi?.maPhien != dot?.maPhien && !dangGuiViec) loiViec = ""
+            dot = moi
+            daCoDot = true
+            veLai()
+        }
+        if (ngheViecNha == null) daCoDot = true
+        ngheDanhSach = Kho.ngheDanhSachViec(this) { ds ->
+            danhSachChung = ds
             veLai()
         }
     }
@@ -282,7 +304,7 @@ class MainActivity : AppCompatActivity() {
      * voi nguoi khong quen dung dien thoai.
      */
     private fun xepLaiKhoi() {
-        val dangGiao = ViecNha.dangGiao(this).isNotEmpty()
+        val dangGiao = dot?.cac?.isNotEmpty() == true
         val cot = binding.boxNut.parent as? LinearLayout ?: return
         val viTriNut = cot.indexOfChild(binding.boxNut)
         val viTriTieuDe = cot.indexOfChild(binding.txtViecTieuDe)
@@ -359,13 +381,19 @@ class MainActivity : AppCompatActivity() {
      * doan cai nut minh sap bam la giao them hay bao xong.
      */
     private fun veViecNha() {
-        val dangGiao = ViecNha.dangGiao(this)
         binding.boxViec.removeAllViews()
+        if (!daCoDot) {
+            binding.txtViecPhuDe.text = ""
+            binding.btnGiaoViec.visibility = View.GONE
+            return
+        }
+        val d = dot?.takeIf { it.cac.isNotEmpty() }
 
-        if (dangGiao.isEmpty()) {
-            daChonViec.retainAll(ViecNha.danhSach(this).map { it.ten }.toSet())
-            binding.txtViecPhuDe.text = getString(R.string.viec_chua_giao)
-            ViecNha.danhSach(this).take(ViecNha.TOI_DA_MOI_PHIEN).forEach { v ->
+        if (d == null) {
+            val ds = danhSach()
+            daChonViec.retainAll(ds.map { it.ten }.toSet())
+            binding.txtViecPhuDe.text = loiViec.ifEmpty { getString(R.string.viec_chua_giao) }
+            ds.forEach { v ->
                 themDongViec(
                     ten = v.ten,
                     phu = "${v.phut} phút",
@@ -377,7 +405,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 )
             }
-            val phut = ViecNha.danhSach(this).filter { it.ten in daChonViec }.sumOf { it.phut }
+            val phut = ds.filter { it.ten in daChonViec }.sumOf { it.phut }
             binding.btnGiaoViec.visibility =
                 if (daChonViec.isEmpty()) View.GONE else View.VISIBLE
             binding.btnGiaoViec.isEnabled = !dangGuiViec
@@ -392,38 +420,47 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // Xong het ma dot viec van con trong may nghia la tablet chua nhan: listener
-        // ben [batNghe] xoa dot nay ngay khi tablet bao da khep lai.
-        val choNhan = dangGiao.all { it.xong }
+        // Xong het ma dot viec van con tren Firestore nghia la tablet chua nhan:
+        // tablet khep dot nao thi xoa document cua dot do.
+        val choNhan = d.xongHet
         binding.txtViecPhuDe.text = when {
             loiViec.isNotEmpty() -> loiViec
             choNhan -> getString(R.string.viec_cho_nhan)
+            d.ai == Nguoi.BA_HUY -> getString(R.string.viec_ba_huy_giao)
             else -> getString(R.string.viec_dang_giao)
         }
-        dangGiao.forEach { v ->
+        d.cac.forEach { v ->
             themDongViec(
                 ten = v.ten,
                 phu = if (v.xong) getString(R.string.viec_da_xong) else "${v.phut} phút",
                 nhanChinh = if (v.xong) getString(R.string.viec_da_xong)
                 else getString(R.string.viec_xong),
                 chinhMo = !v.xong && !dangGuiViec,
-                khiChinh = { xongViec(v.ten) },
+                khiChinh = { xongViec(d.maPhien, v.ten) },
                 nhanPhu = if (v.xong) null else getString(R.string.viec_bo),
-                khiPhu = { boViec(v.ten) }
+                khiPhu = { boViec(d.maPhien, v.ten) }
             )
         }
         binding.btnGiaoViec.visibility = View.VISIBLE
         binding.btnGiaoViec.isEnabled = !dangGuiViec
         binding.btnGiaoViec.text = when {
             dangGuiViec -> getString(R.string.viec_dang_gui)
-            loiViec.isNotEmpty() -> getString(R.string.thu_lai)
             choNhan -> getString(R.string.viec_gui_lai)
             else -> getString(R.string.viec_bo_het)
         }
         binding.btnGiaoViec.setOnClickListener {
-            if (loiViec.isNotEmpty() || choNhan) dongBoViec() else boHetViec()
+            if (choNhan) guiLaiViec(d.maPhien) else boHetViec(d.maPhien)
         }
     }
+
+    /**
+     * Danh sach de chon: ban chung tren Firestore, chua doc duoc thi ban trong may.
+     *
+     * Cat o [Duong.TOI_DA_VIEC] du Bang dieu khien da khong cho luu dai hon: ban
+     * trong may la do ban app truoc de lai, luc do chua co tran nay.
+     */
+    private fun danhSach(): List<ViecNha.Viec> =
+        (danhSachChung ?: ViecNha.danhSachTrongMay(this)).take(Duong.TOI_DA_VIEC)
 
     private fun themDongViec(
         ten: String,
@@ -449,153 +486,49 @@ class MainActivity : AppCompatActivity() {
         binding.boxViec.addView(d.root)
     }
 
-    /**
-     * Ba giao mot dot viec moi.
-     *
-     * Ghi xuong may TRUOC roi moi gui, y het [bam]: app bi dong giua chung thi cai
-     * con lai tren may van la cai ba vua bam, va nut "Thu lai" gui lai duoc. Gui
-     * truoc ghi sau thi co canh tablet dang khoa man hinh ma ben nay khong biet
-     * minh da giao gi.
-     */
+    /** Ba giao mot dot viec moi tu nhung viec da chon. */
     private fun giaoViec() {
         if (dangGuiViec || daChonViec.isEmpty()) return
         if (!Nha.daGhep(this)) return hoiCaiDat()
-        ViecNha.giao(this, ViecNha.danhSach(this).filter { it.ten in daChonViec })
-        daChonViec.clear()
-        dongBoViec()
+        val cac = danhSach().filter { it.ten in daChonViec }
+        // Giao hong thi giu nguyen cac viec da chon, de ba chi viec bam lai.
+        guiViec({ xong -> Kho.giaoViec(this, cac, xong) }) { daChonViec.clear() }
     }
 
-    private fun xongViec(ten: String) {
-        if (dangGuiViec) return
-        ViecNha.danhDauXong(this, ten)
-        dongBoViec()
-    }
+    private fun xongViec(maPhien: String, ten: String) =
+        guiViec({ xong -> Kho.xongViec(this, maPhien, ten, xong) })
 
-    private fun boViec(ten: String) {
-        if (dangGuiViec) return
-        ViecNha.boViec(this, ten)
-        dongBoViec()
-    }
+    private fun boViec(maPhien: String, ten: String) =
+        guiViec({ xong -> Kho.boViec(this, maPhien, ten, xong) })
 
-    private fun boHetViec() {
-        if (dangGuiViec) return
-        ViecNha.boHet(this)
-        dongBoViec()
-    }
+    private fun boHetViec(maPhien: String) =
+        guiViec({ xong -> Kho.boHetViec(this, maPhien, xong) })
+
+    private fun guiLaiViec(maPhien: String) =
+        guiViec({ xong -> Kho.guiLaiViec(this, maPhien, xong) })
 
     /**
-     * Day trang thai viec nha hien tai sang tablet.
+     * Gui mot lan bam viec nha, va giu man hinh o canh "dang gui" cho toi luc xong.
      *
-     * Gui CA DANH SACH moi lan chu khong gui rieng cai vua doi: mot ban trang thai
-     * day du thi tablet doc duoc ban nao cung dung, con gui su kien roi le thi mat
-     * mot cai la hai ben lech nhau vinh vien.
-     *
-     * Xong het thi xoa phien SAU KHI gui duoc, khong phai truoc: xoa truoc ma mang
-     * rot thi tablet con khoa man hinh, ma ben nay khong con gi de gui lai.
+     * KHONG SUA [dot] O DAY, ke ca khi gui duoc: listener se mang ban moi ve. Tu sua
+     * theo cai vua gui thi co luc sai - bam xong viec cuoi la tablet khep dot va xoa
+     * document ngay, va tin "da xoa" do co the ve truoc cau tra loi cua transaction.
+     * Luc ay man hinh giu mai mot dot khong con nua, ma khong con gi bao no ve lai.
      */
-    private fun dongBoViec() {
-        val cac = ViecNha.dangGiao(this)
-
+    private fun guiViec(gui: ((Kho.KetQua) -> Unit) -> Unit, khiXong: () -> Unit = {}) {
+        if (dangGuiViec) return
         dangGuiViec = true
         loiViec = ""
         veLai()
-
-        // Khong gui kem cau mo ta cho nguoi doc nua. Truoc kia phai gui, vi dong do
-        // hien thang trong nhom Telegram cho Ba Huy xem; bay gio tablet tu dat cau
-        // theo viec no lam duoc - va no moi la ben biet minh da lam duoc gi.
-        Kho.datViecNha(
-            this,
-            maPhien = ViecNha.maPhien(this),
-            cac = cac
-        ) { kq ->
+        gui { kq ->
             dangGuiViec = false
             when (kq) {
-                /*
-                 * Ghi duoc roi, nhung KHONG xoa dot viec trong may o day.
-                 *
-                 * Ghi len Firestore xong chi co nghia la du lieu da nam tren may chu,
-                 * khong co nghia la tablet da nhan va cong gio - tablet co the dang
-                 * tat, hay dang bo qua vi ban qua nua tieng. Xoa o day la vut mat thu
-                 * duy nhat con gui lai duoc: ba quay ve man chon viec, khong con nut
-                 * nao de bam, va so phut chau lam ra mat luon ma khong ai biet.
-                 *
-                 * Cho tablet bao da nhan roi moi xoa, xem [batNghe].
-                 */
-                is Kho.KetQua.Xong -> loiViec = ""
-
+                is Kho.KetQua.Xong -> khiXong()
                 is Kho.KetQua.Hong -> loiViec = kq.viSao
             }
             veLai()
         }
     }
-
-    /**
-     * Sua danh sach viec nha: ten va so phut cua tung viec.
-     *
-     * Nguoi doc man nay la Ba Huy. Ba noi chi bam cac nut o man chinh, khong bao gio
-     * vao day.
-     *
-     * Moi dong co mot nut xoa. Truoc day khong co, va cach bo mot viec la de trong
-     * o ten roi bam Xong - mot quy uoc khong ghi o dau tren man hinh ca.
-     */
-    private fun hoiCaiDatViec() {
-        val cot = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            val p = (20 * resources.displayMetrics.density).toInt()
-            setPadding(p, p / 2, p, 0)
-        }
-        val cacDong = mutableListOf<DongSuaViecBinding>()
-
-        fun themHang(ten: String, phut: Int, viTri: Int = -1): DongSuaViecBinding {
-            val d = DongSuaViecBinding.inflate(layoutInflater, cot, false)
-            d.oTen.setText(ten)
-            d.oPhut.setText(phut.toString())
-            d.nutXoa.setOnClickListener {
-                cot.removeView(d.root)
-                cacDong.remove(d)
-            }
-            cacDong += d
-            if (viTri < 0) cot.addView(d.root) else cot.addView(d.root, viTri)
-            return d
-        }
-
-        ViecNha.danhSach(this).forEach { themHang(it.ten, it.phut) }
-
-        // Nut them nam duoi cung, va hang moi chen vao ngay truoc no.
-        val nutThem = MaterialButton(
-            this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            text = getString(R.string.viec_them)
-            textSize = 16f
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setOnClickListener {
-                themHang("", 10, cot.childCount - 1).oTen.requestFocus()
-            }
-        }
-        cot.addView(nutThem)
-
-        val cuon = ScrollView(this).apply { addView(cot) }
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.viec_sua_danh_sach)
-            .setView(cuon)
-            .setPositiveButton(R.string.xong) { _, _ ->
-                val moi = cacDong.mapNotNull { d ->
-                    val ten = d.oTen.text.toString().trim()
-                    if (!ViecNha.tenHopLe(ten)) return@mapNotNull null
-                    val phut = d.oPhut.text.toString().trim().toIntOrNull() ?: 10
-                    ViecNha.Viec(ten, phut.coerceIn(0, 240))
-                }
-                if (moi.isNotEmpty()) ViecNha.datDanhSach(this, moi)
-                veLai()
-            }
-            .setNegativeButton(R.string.huy, null)
-            .show()
-    }
-
 
     /**
      * Ghep may nay voi may cua chau. Nguoi doc man nay la Ba Huy, khong phai ba noi.
@@ -616,7 +549,6 @@ class MainActivity : AppCompatActivity() {
     private fun hoiCaiDat() {
         val db = DialogCaiDatBinding.inflate(layoutInflater)
         db.edMaNha.setText(Nha.maNha(this))
-        db.btnSuaViec.setOnClickListener { hoiCaiDatViec() }
 
         if (!Kho.san(this)) {
             db.chuTinhHinh.text = getString(R.string.chua_noi_firebase)

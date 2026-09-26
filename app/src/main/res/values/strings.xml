@@ -15,6 +15,7 @@
     <string name="viec_tieu_de">Việc nhà</string>
     <string name="viec_chua_giao">Chọn việc rồi bấm giao. Máy của Lê Hòa khoá đến khi bà bấm xong hết.</string>
     <string name="viec_dang_giao">Lê Hòa làm xong việc nào thì bà bấm Xong việc đó.</string>
+    <string name="viec_ba_huy_giao">Ba Huy giao đợt này. Lê Hòa làm xong việc nào thì bà bấm Xong việc đó.</string>
     <string name="viec_giao_nut">Giao %1$d việc (%2$d phút)</string>
     <string name="viec_xong">Xong</string>
     <string name="viec_bo">Bỏ</string>
@@ -23,8 +24,7 @@
     <string name="viec_cho_nhan">Đã xong hết. Đang chờ máy của Lê Hòa nhận. Máy đang tắt thì bật lên rồi bấm Gửi lại.</string>
     <string name="viec_gui_lai">Gửi lại cho máy của Lê Hòa</string>
     <string name="viec_bo_het">Bỏ hết việc đã giao</string>
-    <string name="viec_sua_danh_sach">Sửa danh sách việc nhà</string>
-    <string name="viec_them">Thêm việc</string>
+    <string name="viec_sua_o_bang">Danh sách việc nhà giờ sửa trên app Bảng điều khiển của Ba Huy. Sửa bên đó thì máy này tự nhận.</string>
 
     <string name="dang_gui">Đang gửi…</string>
     <string name="thu_lai">Thử lại</string>

@@ -6,7 +6,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.MetadataChanges
 
 /**
  * Cua duy nhat di ra Firestore.
@@ -18,9 +20,10 @@ import com.google.firebase.firestore.ListenerRegistration
  * bot. Ghi thang xuong Firestore bo duoc ca ba.
  *
  * MAY NAY KHONG PHAI NGUOI NHA DAY DU. Uid cua no nam trong uidsPhu, va luat ben
- * firestore.rules chi cho danh sach do lam ba viec: tao lenh kieu CHO, ghi
- * hop/viecnha, va doc hop/trangthai. Bam nham cai gi khac thi Firestore tu choi,
- * khong phai trong vao viec man hinh nay khong hien nut do ra.
+ * firestore.rules chi cho danh sach do lam may viec: tao lenh kieu CHO, doc va ghi
+ * hop/viecnha, doc hop/trangthai, doc hop/danhsachviec va tao no mot lan khi chua
+ * co. Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh
+ * nay khong hien nut do ra.
  *
  * Khong dung Task.await() vi nhu the phai keo them kotlinx-coroutines-play-services
  * chi de cho vai lan goi. Callback la du.
@@ -135,42 +138,147 @@ object Kho {
             }
     }
 
+    // -------------------------------------------------------------- viec nha
+
+    /** Ba giao mot dot moi tu danh sach da chon. */
+    fun giaoViec(context: Context, cac: List<ViecNha.Viec>, xong: (KetQua) -> Unit) =
+        doiViecNha(context, xong) { cu ->
+            // Man hinh ba dang la danh sach de chon, ma tren may chu da co dot khac:
+            // Ba Huy vua giao, va ban do chua kip ve toi day. Ghi de la xoa dot cua
+            // Ba Huy ma khong ai hay.
+            if (cu != null && cu.cac.isNotEmpty()) throw LoiViec(DA_CO_DOT)
+            ViecNha.dotMoi(cac, Nguoi.BA_NOI, System.currentTimeMillis())
+        }
+
     /**
-     * Dat trang thai viec nha.
+     * Ba bam xong mot viec.
      *
-     * Ghi CA DANH SACH moi lan chu khong gui rieng cai vua doi: mot ban trang thai
-     * day du thi tablet doc duoc ban nao cung dung, con gui su kien roi le thi mat
-     * mot cai la hai ben lech nhau vinh vien.
-     *
-     * Ghi de luon, khong merge: danh sach ngan di - ba bo mot viec - ma merge thi
-     * viec do van nam lai trong mang cu.
+     * Viec do da co nguoi bam xong roi (Ba Huy bam truoc mot nhip) thi thoi, khong
+     * ghi gi va khong bao loi: dieu ba muon da dung roi.
      */
-    fun datViecNha(
+    fun xongViec(context: Context, maPhien: String, ten: String, xong: (KetQua) -> Unit) =
+        doiViecNha(context, xong) { cu ->
+            val dot = cungDot(cu, maPhien)
+            if (dot.cac.none { it.ten == ten && !it.xong }) null
+            else dot.xong(ten, System.currentTimeMillis())
+        }
+
+    /** Ba bo mot viec da giao, vi bam nham hay thoi khong bat lam nua. */
+    fun boViec(context: Context, maPhien: String, ten: String, xong: (KetQua) -> Unit) =
+        doiViecNha(context, xong) { cu ->
+            val dot = cungDot(cu, maPhien)
+            if (dot.cac.none { it.ten == ten }) null
+            else dot.bo(ten, System.currentTimeMillis())
+        }
+
+    fun boHetViec(context: Context, maPhien: String, xong: (KetQua) -> Unit) =
+        doiViecNha(context, xong) { cu ->
+            val dot = cungDot(cu, maPhien)
+            if (dot.cac.isEmpty()) null else dot.boHet(System.currentTimeMillis())
+        }
+
+    /**
+     * Gui lai mot dot da xong het ma tablet chua nhan.
+     *
+     * Document da mat, hay da la dot khac, thi thoi: tablet nhan roi, hoac co nguoi
+     * da giao dot moi. Khong co gi de gui lai.
+     */
+    fun guiLaiViec(context: Context, maPhien: String, xong: (KetQua) -> Unit) =
+        doiViecNha(context, xong) { cu ->
+            if (cu == null || cu.maPhien != maPhien) null
+            else cu.guiLai(System.currentTimeMillis())
+        }
+
+    /**
+     * Doi dot viec nha bang mot transaction.
+     *
+     * VI SAO TRANSACTION: Bang dieu khien cung ghi vao day. Ghi de ca ban ma man
+     * hinh nay dang giu thi mot cai bam ben kia ngay truoc do mat luon - viec Ba Huy
+     * vua bao xong quay ve chua xong, va tablet khoa lai vi no. Transaction doc ban
+     * tren may chu, [doi] sua dung viec vua bam tren ban do roi moi ghi. Hai may bam
+     * cung luc thi Firestore bat mot ben lam lai tren ban moi.
+     *
+     * DOI LAI, LUC BAM PHAI CO MANG. set() thi xep hang cho co mang roi tu gui, con
+     * transaction mat mang la hong ngay va ba bam lai. Chap nhan duoc: tablet cung
+     * phai co mang moi nhan duoc gi, va hong thi man hinh noi ra chu khong lang im.
+     *
+     * [doi] nhan dot dang nam tren may chu, null la khong co dot nao. Tra ve null la
+     * khong can ghi gi; nem [LoiViec] la dung lai va bao cho ba.
+     */
+    private fun doiViecNha(
         context: Context,
-        maPhien: String,
-        cac: List<ViecNha.DangLam>,
-        xong: (KetQua) -> Unit
+        xong: (KetQua) -> Unit,
+        doi: (ViecNha.Dot?) -> ViecNha.Dot?
     ) {
         val h = hop(context, Duong.D_VIEC_NHA) ?: return xong(KetQua.Hong(CHUA_GHEP))
-        h.set(
-            mapOf(
-                Duong.F_MA_PHIEN to maPhien,
-                Duong.F_LUC to System.currentTimeMillis(),
-                Duong.F_VIEC to cac.map {
-                    mapOf(
-                        Duong.F_TEN to it.ten,
-                        Duong.F_PHUT to it.phut,
-                        Duong.F_XONG to it.xong
-                    )
-                }
-            )
-        )
+        h.firestore.runTransaction { tr ->
+            val moi = doi(ViecNha.docDot(tr.get(h).data))
+            if (moi != null) tr.set(h, ViecNha.banGhi(moi))
+            null
+        }
             .addOnSuccessListener { xong(KetQua.Xong) }
             .addOnFailureListener {
-                Log.w(TAG, "dat viec nha hong", it)
-                xong(KetQua.Hong(loiNguoiDoc(it)))
+                Log.w(TAG, "doi viec nha hong", it)
+                val loiViec = it as? LoiViec ?: it.cause as? LoiViec
+                xong(KetQua.Hong(loiViec?.message ?: loiGiaoDich(it)))
             }
     }
+
+    /** Dot tren may chu phai dung la dot ba dang nhin, khong thi dung lai. */
+    private fun cungDot(cu: ViecNha.Dot?, maPhien: String): ViecNha.Dot {
+        if (cu == null || cu.maPhien != maPhien) throw LoiViec(DOT_DA_DOI)
+        return cu
+    }
+
+    /** Loi do chinh ben nay dung transaction lai, kem cau noi cho ba. */
+    private class LoiViec(chu: String) : Exception(chu)
+
+    /**
+     * Nghe danh sach viec chung o hop/danhsachviec.
+     *
+     * [khi] nhan null khi chua co danh sach nao doc duoc: document chua co, hay luat
+     * tren Firestore chua cho may nay doc (chua dan firestore.rules moi). Luc do man
+     * hinh dung danh sach trong may.
+     *
+     * Document chua co, va chinh may chu noi vay chu khong phai bo nho dem luc mat
+     * mang, thi gui danh sach trong may len. Ban app truoc cho Ba Huy sua danh sach
+     * tren may ba; khong gui len thi nhung viec do mat khi hai may dung chung mot
+     * danh sach. Luat chi cho may ba TAO document nay, nen neu Bang dieu khien da
+     * luu truoc thi lan gui nay bi tu choi va danh sach cua Ba Huy giu nguyen.
+     */
+    fun ngheDanhSachViec(
+        context: Context,
+        khi: (List<ViecNha.Viec>?) -> Unit
+    ): ListenerRegistration? {
+        val h = hop(context, Duong.D_DANH_SACH_VIEC) ?: return null
+        // Nghe ca doi metadata: bo nho dem luc mat mang bao "chua co", roi may chu bao
+        // lai dung cau do. Khong nghe thi lan thu hai khong toi, va may nay khong bao
+        // gio biet la phai gui danh sach len.
+        return h.addSnapshotListener(MetadataChanges.INCLUDE) { snap, loi ->
+            if (loi != null) {
+                Log.w(TAG, "nghe danh sach viec hong", loi)
+                return@addSnapshotListener khi(null)
+            }
+            if (snap == null) return@addSnapshotListener
+            if (!snap.exists()) {
+                if (!snap.metadata.isFromCache && !daGuiDanhSach) {
+                    daGuiDanhSach = true
+                    h.set(
+                        mapOf(
+                            Duong.F_VIEC to ViecNha.banDanhSach(ViecNha.danhSachTrongMay(context)),
+                            Duong.F_LUC to System.currentTimeMillis(),
+                            Duong.F_AI to Nguoi.BA_NOI
+                        )
+                    ).addOnFailureListener { Log.w(TAG, "gui danh sach viec hong", it) }
+                }
+                return@addSnapshotListener khi(null)
+            }
+            khi(ViecNha.docDanhSach(snap.get(Duong.F_VIEC) as? List<*>).takeIf { it.isNotEmpty() })
+        }
+    }
+
+    /** Da gui danh sach trong may len chua, trong lan chay nay. Mot lan la du. */
+    private var daGuiDanhSach = false
 
     // ------------------------------------------------------------------ nghe
 
@@ -197,19 +305,17 @@ object Kho {
         }
 
     /**
-     * Nghe xem dot viec nha con nam tren Firestore khong.
+     * Nghe dot viec nha dang giao. null la khong co dot nao.
      *
-     * DAY LA CAU TRA LOI, khong phai ban sao du lieu. Ghi len Firestore xong khong co
-     * nghia la tablet da nhan: tablet co the dang tat, hay dang bo qua vi ban qua cu.
-     * Tablet nhan va khep xong mot dot thi no XOA document di - nen document con nam
-     * do nghia la chua ai nhan, va ba con nut de gui lai.
-     *
-     * [khi] nhan true khi document con, false khi da mat.
+     * Day la thu man hinh ve theo, ke ca viec Ba Huy giao hay bam xong ben Bang dieu
+     * khien. Va no cung la cau tra loi cua tablet: tablet nhan va khep xong mot dot
+     * thi no XOA document di, nen dot xong het ma con nam do nghia la tablet chua
+     * nhan, va ba con nut de gui lai.
      */
-    fun ngheViecNha(context: Context, khi: (conDo: Boolean) -> Unit): ListenerRegistration? =
+    fun ngheViecNha(context: Context, khi: (ViecNha.Dot?) -> Unit): ListenerRegistration? =
         hop(context, Duong.D_VIEC_NHA)?.addSnapshotListener { snap, loi ->
             if (loi != null) return@addSnapshotListener
-            khi(snap != null && snap.exists())
+            khi(ViecNha.docDot(snap?.data))
         }
 
     // ---------------------------------------------------------------- rieng tu
@@ -276,6 +382,24 @@ object Kho {
             else -> "Không gửi được: $chu"
         }
     }
+
+    /**
+     * Cau bao hong cho mot lan bam viec nha.
+     *
+     * Khac [loiNguoiDoc] o cau mat mang: transaction khong tu gui lai khi co mang,
+     * nen noi "may se tu gui lai" la noi sai.
+     */
+    private fun loiGiaoDich(loi: Exception): String {
+        val matMang = (loi as? FirebaseFirestoreException)?.code ==
+            FirebaseFirestoreException.Code.UNAVAILABLE ||
+            loi.message.orEmpty().contains("offline", true)
+        return if (matMang) "Chưa có mạng nên chưa gửi được. Có mạng rồi bà bấm lại."
+        else loiNguoiDoc(loi)
+    }
+
+    private const val DA_CO_DOT = "Đang có một đợt việc khác. Bà xem lại danh sách ở trên."
+
+    private const val DOT_DA_DOI = "Danh sách việc vừa đổi. Bà xem lại rồi bấm lại."
 
     private const val THIEU_FIREBASE =
         "Bản app này chưa nối Firebase (thiếu google-services.json lúc build)."

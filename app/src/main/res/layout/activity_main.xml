@@ -67,8 +67,8 @@
             android:layout_marginTop="24dp"
             android:orientation="vertical" />
 
-        <!-- Viec nha. Do vao tu ViecNha, khong viet tay trong XML: danh sach viec
-             sua duoc trong Cai dat, sua xong la man hinh theo ngay.
+        <!-- Viec nha. Do vao tu ViecNha, khong viet tay trong XML: Ba Huy sua danh
+             sach viec tren Bang dieu khien, sua xong la man hinh theo ngay.
 
              Dat DUOI cac nut gio vi hai viec khac han nhau ve tan suat: nut gio la
              viec moi ngay cua ba, con viec nha la thinh thoang. Cai hay dung nam
