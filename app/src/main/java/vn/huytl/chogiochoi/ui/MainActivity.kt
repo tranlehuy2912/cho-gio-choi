@@ -54,12 +54,17 @@ class MainActivity : AppCompatActivity() {
     private var ngheDanhSach: ListenerRegistration? = null
 
     /**
-     * Firestore da tra ban dau tien cua dot viec chua, tu luc mo app.
+     * Firestore da tra ban dau tien cua dot viec va cua danh sach viec chua.
      *
      * Chua thi khoi viec nha chua hien gi: ve truoc la ra danh sach de chon, roi mot
-     * nhip sau doi sang dot dang chay - dung luc ba dang dua tay toi mot nut.
+     * nhip sau doi sang dot dang chay - dung luc ba dang dua tay toi mot nut. Doi ca
+     * danh sach, khong thi danh sach mac dinh hien mot nhip roi moi doi.
      */
     private var daCoDot = false
+    private var daCoDanhSach = false
+
+    /** Nha dang nghe. Doi nha (ghep lai) thi moi thu cua nha cu phai bo di. */
+    private var nhaDangNghe = ""
 
     private var ngheViecNha: ListenerRegistration? = null
 
@@ -79,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         // Ve ngay ban dang giu, roi listener mang ban moi ve: ba quay lai app sau mot
         // luc thi dot viec co the da doi ben Bang dieu khien hay ben tablet.
-        veLai()
         batNghe()
+        veLai()
     }
 
     override fun onPause() {
@@ -97,26 +102,46 @@ class MainActivity : AppCompatActivity() {
     private fun batNghe() {
         ngheViecNha?.remove()
         ngheDanhSach?.remove()
-        if (!Nha.daGhep(this)) {
+        val nha = Nha.maNha(this)
+        if (nha != nhaDangNghe) {
+            // Ghep sang nha khac: dot viec, danh sach va viec da chon deu la cua nha
+            // cu, bam vao la ghi nham cho. Bo het roi doi ban dau tien cua nha moi.
+            nhaDangNghe = nha
+            dot = null
+            danhSachChung = null
+            daChonViec.clear()
+            loiViec = ""
+            daCoDot = false
+            daCoDanhSach = false
+        }
+        if (nha.isEmpty()) {
             daCoDot = true
+            daCoDanhSach = true
             return
         }
 
         // Dot viec con nam do nghia la chua ai nhan; mat di nghia la tablet da khep
         // no lai. Ca nhung gi Ba Huy vua giao hay vua bam cung ve qua day.
-        ngheViecNha = Kho.ngheViecNha(this) { moi ->
-            // Sang dot khac thi cau bao hong cua lan bam truoc khong con noi ve cai gi
-            // tren man hinh nua.
-            if (moi?.maPhien != dot?.maPhien && !dangGuiViec) loiViec = ""
-            dot = moi
+        ngheViecNha = Kho.ngheViecNha(this) { moi, loi ->
+            if (loi != null) {
+                // Firestore dung han listener sau loi. Noi ra, khong de man hinh trong.
+                dot = null
+                loiViec = loi
+            } else {
+                // Noi dung doi thi cau bao hong cua lan bam truoc khong con dung nua.
+                if (moi != dot && !dangGuiViec) loiViec = ""
+                dot = moi
+            }
             daCoDot = true
             veLai()
         }
         if (ngheViecNha == null) daCoDot = true
         ngheDanhSach = Kho.ngheDanhSachViec(this) { ds ->
             danhSachChung = ds
+            daCoDanhSach = true
             veLai()
         }
+        if (ngheDanhSach == null) daCoDanhSach = true
     }
 
     /** Ve lai toan bo man hinh theo tinh hinh hien tai. */
@@ -169,7 +194,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun veViecNha() {
         binding.boxViec.removeAllViews()
-        if (!daCoDot) {
+        if (!daCoDot || !daCoDanhSach) {
             binding.txtViecPhuDe.text = ""
             binding.btnGiaoViec.visibility = View.GONE
             return
@@ -306,12 +331,15 @@ class MainActivity : AppCompatActivity() {
         if (dangGuiViec) return
         dangGuiViec = true
         loiViec = ""
+        val dotLucBam = dot?.maPhien
         veLai()
         gui { kq ->
             dangGuiViec = false
             when (kq) {
                 is Kho.KetQua.Xong -> khiXong()
-                is Kho.KetQua.Hong -> loiViec = kq.viSao
+                // Trong luc gui ma man hinh da sang dot khac thi cau bao hong noi ve dot
+                // cu, ba doc se hieu nham la dot dang hien. Bo di.
+                is Kho.KetQua.Hong -> if (dot?.maPhien == dotLucBam) loiViec = kq.viSao
             }
             veLai()
         }

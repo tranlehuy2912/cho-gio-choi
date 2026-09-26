@@ -96,7 +96,7 @@
                 android:textColor="@color/xong"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                tools:text="Hôm nay xong rồi" />
+                tools:text="Chưa nối máy" />
 
             <TextView
                 android:id="@+id/txtTheChiTiet"
@@ -106,7 +106,7 @@
                 android:lineSpacingExtra="4dp"
                 android:textColor="@color/chu"
                 android:textSize="19sp"
-                tools:text="Đã cho Lê Hòa chơi 30 phút, lúc 14:05." />
+                tools:text="Nhờ Ba Huy mở Cài đặt và nối máy này với máy của Lê Hòa." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnThe"
@@ -115,7 +115,7 @@
                 android:layout_marginTop="18dp"
                 android:textSize="19sp"
                 android:visibility="gone"
-                tools:text="Thử lại"
+                tools:text="Cài đặt"
                 tools:visibility="visible" />
         </LinearLayout>
     </LinearLayout>

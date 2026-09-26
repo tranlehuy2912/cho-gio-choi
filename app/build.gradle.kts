@@ -95,8 +95,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-        // Cho [Defaults] biet dang la ban go loi hay ban that de chon bot.
-        buildConfig = true
     }
 }
 
