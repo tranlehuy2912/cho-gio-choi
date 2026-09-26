@@ -195,6 +195,21 @@ object Duong {
      */
     const val F_KHAI = "khai"
 
+    /**
+     * Vo dan do con da soat tu dau buoi, ma lan nop nay dung thay cho trang vo.
+     *
+     * Map { ngay, cacBai, dongKhac, fileId }. Tablet chep luc con nop, khi lan nop do
+     * khong chup trang vo. ngay la ngay ghi tren vo, dang yyyy-MM-dd. cacBai la cac dong
+     * con tich la bai tap, rong la hom do co khong giao bai tap nao. fileId la anh trang
+     * vo tren Telegram, vang la chua gui duoc; co thi anh do cung nam trong [F_ANH] voi
+     * khau DAN_DO, de Bang dieu khien ban cu van gui trang vo cho Claude doc.
+     *
+     * Co truong nay thi loi nho gui Claude chep san ngay va danh sach bai, y nhu cau
+     * lenh cua may cham, va Claude chi con noi con lam het chua, cau nao thuoc bai co
+     * giao.
+     */
+    const val F_DAN_DO = "danDo"
+
     // --- truong trong chat/{id} ---
     const val F_TU = "tu"
     const val F_DA_DOC = "daDoc"
@@ -317,6 +332,9 @@ object Lenh {
      * trongDanDo }]. Tablet chay dung cac buoc nhu luc AI cham xong: tinh phut theo luat,
      * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
      * duyet.
+     *
+     * Bai co [Duong.F_DAN_DO] thi coAnhDanDo la true, va tablet lay ngay cung danh sach
+     * bai tu ban no giu luc con nop. Tu Claude chi lay lamHetDanDo va trongDanDo.
      *
      * Khac [SUA_CHAM]: lenh kia sua mot ban cham da co, lenh nay la ban cham dau tien.
      */
