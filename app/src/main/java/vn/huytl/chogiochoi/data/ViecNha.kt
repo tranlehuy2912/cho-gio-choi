@@ -10,10 +10,8 @@ import kotlin.random.Random
  * CACH CHAY: ba bam mot hay nhieu viec. Tablet khoa man hinh cho den khi ba bam
  * "Xong" cho tung viec. Xong het thi may mo va cong so phut cua cac viec do.
  *
- * KHAC NUT CHO GIO O HAI CHO. Nut cho gio chi mot lan moi ngay, con viec nha thi
- * ba giao bao nhieu lan cung duoc - do la viec that trong nha, khong phai mot suat
- * uu dai. Va nut cho gio bam xong la het viec, con viec nha thi phai theo den luc
- * chau lam xong.
+ * GIAO BAO NHIEU LAN CUNG DUOC, khong gioi han moi ngay nhu sau nut cho gio cua ban
+ * app truoc: do la viec that trong nha, khong phai mot suat uu dai.
  *
  * TEN VIEC GUI KEM SANG TABLET chu khong dat ma cung o hai dau: Ba Huy sua danh
  * sach viec, ma sua xong thi tablet phai goi dung ten moi ngay chu khong phai cai

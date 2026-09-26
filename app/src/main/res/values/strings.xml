@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cho giờ chơi</string>
+    <string name="app_name">Việc nhà của Lê Hòa</string>
 
     <!-- De o day de sau nay doi ten khong phai lan tim trong ma nguon, giong
          cach ben homework-gate dang lam. -->
     <string name="child_name">Lê Hòa</string>
 
-    <string name="title">Cho Lê Hòa chơi</string>
-    <string name="subtitle">Mỗi ngày một lần</string>
-
-    <string name="nut_phut">%d phút</string>
+    <string name="title">Việc nhà của Lê Hòa</string>
 
     <!-- Viec nha -->
-    <string name="viec_tieu_de">Việc nhà</string>
     <string name="viec_chua_giao">Chọn việc rồi bấm giao. Máy của Lê Hòa khoá đến khi bà bấm xong hết.</string>
     <string name="viec_dang_giao">Lê Hòa làm xong việc nào thì bà bấm Xong việc đó.</string>
     <string name="viec_ba_huy_giao">Ba Huy giao đợt này. Lê Hòa làm xong việc nào thì bà bấm Xong việc đó.</string>
@@ -26,24 +22,12 @@
     <string name="viec_bo_het">Bỏ hết việc đã giao</string>
     <string name="viec_sua_o_bang">Danh sách việc nhà giờ sửa trên app Bảng điều khiển của Ba Huy. Sửa bên đó thì máy này tự nhận.</string>
 
-    <string name="dang_gui">Đang gửi…</string>
-    <string name="thu_lai">Thử lại</string>
     <string name="cai_dat">Cài đặt</string>
     <string name="huy">Huỷ</string>
-    <string name="xong">Xong</string>
-
-    <string name="xong_tieu_de">Hôm nay xong rồi</string>
-    <string name="xong_chi_tiet">Đã cho Lê Hòa chơi %1$d phút, lúc %2$s.</string>
-    <string name="xong_mai">Mai mới cho tiếp được.</string>
-
-    <string name="ngoai_gio_tieu_de">Ngoài giờ</string>
-    <string name="ngoai_gio_chi_tiet">Bây giờ là %1$s. Máy của Lê Hòa chỉ mở giờ chơi từ %2$s đến %3$s.</string>
 
     <string name="chua_noi_tieu_de">Chưa nối máy</string>
     <string name="chua_noi_chi_tiet">Nhờ Ba Huy mở Cài đặt và nối máy này với máy của Lê Hòa.</string>
     <string name="chua_noi_firebase">Bản app này chưa nối Firebase. Phải cài lại bản có google-services.json.</string>
-
-    <string name="hong_tieu_de">Chưa gửi được</string>
 
     <!-- Man cai dat, nguoi doc la Ba Huy chu khong phai ba noi -->
     <string name="cai_tieu_de">Nối máy</string>

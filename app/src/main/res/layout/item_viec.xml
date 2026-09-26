@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Mot dong viec nha. Cao va chu to y nhu nut gio: nguoi bam la ba noi, khong
-     phai nguoi tre mat tot. -->
+<!-- Mot dong viec nha. Cao va chu to: nguoi bam la ba noi, khong phai nguoi tre
+     mat tot. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

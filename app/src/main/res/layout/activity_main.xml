@@ -34,15 +34,6 @@
                     android:textColor="@color/chu"
                     android:textSize="30sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/subtitle"
-                    android:textColor="@color/chu_nhat"
-                    android:textSize="17sp" />
             </LinearLayout>
 
             <!-- Banh rang de nho va mo mau, nam sat le phai. Ba noi khong co viec
@@ -58,38 +49,18 @@
                 android:src="@drawable/ic_cai_dat" />
         </LinearLayout>
 
-        <!-- Sau nut duoc do vao day tu Defaults.MOC_PHUT, khong viet tay trong XML:
-             sua danh sach phut o mot cho la giao dien theo ngay. -->
-        <LinearLayout
-            android:id="@+id/boxNut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical" />
-
         <!-- Viec nha. Do vao tu ViecNha, khong viet tay trong XML: Ba Huy sua danh
              sach viec tren Bang dieu khien, sua xong la man hinh theo ngay.
 
-             Dat DUOI cac nut gio vi hai viec khac han nhau ve tan suat: nut gio la
-             viec moi ngay cua ba, con viec nha la thinh thoang. Cai hay dung nam
-             tren cung, khong phai cuon xuong tim. -->
-        <TextView
-            android:id="@+id/txtViecTieuDe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="@string/viec_tieu_de"
-            android:textColor="@color/chu"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
+             Truoc day o day con sau nut cho gio va mot tieu de "Viec nha" rieng. Bo
+             nut gio thi ca man la viec nha, tieu de tren cung da noi roi. -->
         <TextView
             android:id="@+id/txtViecPhuDe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/chu_nhat"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
         <LinearLayout
             android:id="@+id/boxViec"
@@ -106,7 +77,7 @@
             android:textSize="19sp"
             android:visibility="gone" />
 
-        <!-- The thong bao: da cho xong, ngoai gio, chua noi nhom, hay gui hong. -->
+        <!-- The thong bao. Gio chi con mot canh: may nay chua noi voi tablet. -->
         <LinearLayout
             android:id="@+id/boxThe"
             android:layout_width="match_parent"

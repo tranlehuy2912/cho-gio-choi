@@ -9,7 +9,8 @@ import android.content.Context
  * day ca - truoc kia app phai cam token de sua mo ta nhom Telegram, va do la cho
  * yeu nhat cua ca he: ai rut duoc file APK ra khoi may ba la nam con bot, tuc la
  * doc duoc chat gia dinh va go duoc moi lenh sang tablet. Bay gio may ba chi co
- * mot uid an danh, ma uid do nam trong uidsPhu nen chi cho gio duoc.
+ * mot uid an danh, ma uid do nam trong uidsPhu: khong khoa may, khong go app, khong
+ * doc duoc chat.
  */
 object Nha {
 

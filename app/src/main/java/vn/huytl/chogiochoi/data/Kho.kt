@@ -20,10 +20,11 @@ import com.google.firebase.firestore.MetadataChanges
  * bot. Ghi thang xuong Firestore bo duoc ca ba.
  *
  * MAY NAY KHONG PHAI NGUOI NHA DAY DU. Uid cua no nam trong uidsPhu, va luat ben
- * firestore.rules chi cho danh sach do lam may viec: tao lenh kieu CHO, doc va ghi
- * hop/viecnha, doc hop/trangthai, doc hop/danhsachviec va tao no mot lan khi chua
- * co. Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh
- * nay khong hien nut do ra.
+ * firestore.rules chi cho danh sach do lam may viec: doc va ghi hop/viecnha, doc
+ * hop/danhsachviec va tao no mot lan khi chua co, doc hop/trangthai, tao lenh kieu
+ * CHO. Lenh CHO la cua sau nut cho gio da bo ngay 26/9/2026, app nay khong con go.
+ * Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh nay
+ * khong hien nut do ra.
  *
  * Khong dung Task.await() vi nhu the phai keo them kotlinx-coroutines-play-services
  * chi de cho vai lan goi. Callback la du.
@@ -105,36 +106,6 @@ object Kho {
             .addSnapshotListener { snap, loi ->
                 if (loi != null) return@addSnapshotListener
                 khi(snap?.getString("trangThai").orEmpty())
-            }
-    }
-
-    // ------------------------------------------------------------------- ghi
-
-    /**
-     * Ba bam cho gio.
-     *
-     * Dat mot lenh vao hang doi cua tablet. Tablet nghe hang nay, lam xong thi xoa
-     * document di va ghi cau tra loi vao hop/trangthai - xem [ngheTraLoi].
-     *
-     * Khong tu quyet dinh duoc gio hay khong: con han muc ngay khong, co dang gio
-     * ngu khong, hom nay ba cho lan nao chua - chi tablet biet. Cho nay chi go lenh.
-     */
-    fun choGio(context: Context, phut: Int, xong: (KetQua) -> Unit) {
-        val n = nha(context) ?: return xong(KetQua.Hong(CHUA_GHEP))
-        n.collection(Duong.LENH).add(
-            mapOf(
-                Duong.F_KIEU to Lenh.CHO,
-                Duong.F_PHUT to phut,
-                Duong.F_AI to Nguoi.BA_NOI,
-                // Gio may chu gui kem gio may chu: tablet lay cai nay de bo lenh go
-                // tu hom qua, con dong ho hai may thi khong bao gio khop tuyet doi.
-                "tao" to System.currentTimeMillis()
-            )
-        )
-            .addOnSuccessListener { xong(KetQua.Xong) }
-            .addOnFailureListener {
-                Log.w(TAG, "cho gio hong", it)
-                xong(KetQua.Hong(loiNguoiDoc(it)))
             }
     }
 
@@ -281,28 +252,6 @@ object Kho {
     private var daGuiDanhSach = false
 
     // ------------------------------------------------------------------ nghe
-
-    /** Mot cau tablet noi lai, va luc no noi. */
-    data class TraLoi(val chu: String, val luc: Long)
-
-    /**
-     * Nghe cau tablet noi lai sau khi lam lenh cua may NAY.
-     *
-     * Duong hop thu Telegram cu khong co cho nay: ba bam xong khong biet tablet co
-     * nhan duoc khong, co cap duoc gio khong, hay dang trong gio ngu. Tablet bao ve
-     * chat cua Ba Huy chu khong bao cho ba.
-     *
-     * Loc theo [Duong.F_AI]: o traLoi chi co mot cho, ma ca Ba Huy lan ba cung ghi
-     * vao do. Khong loc thi ba thay cau tra loi cho cai nut Ba Huy vua bam ben kia.
-     */
-    fun ngheTraLoi(context: Context, khi: (TraLoi) -> Unit): ListenerRegistration? =
-        hop(context, Duong.D_TRANG_THAI)?.addSnapshotListener { snap, loi ->
-            if (loi != null) return@addSnapshotListener
-            val o = snap?.get(Duong.F_TRA_LOI) as? Map<*, *> ?: return@addSnapshotListener
-            if (o[Duong.F_AI] != Nguoi.BA_NOI) return@addSnapshotListener
-            val chu = o["chu"] as? String ?: return@addSnapshotListener
-            khi(TraLoi(chu, (o["luc"] as? Number)?.toLong() ?: 0L))
-        }
 
     /**
      * Nghe dot viec nha dang giao. null la khong co dot nao.

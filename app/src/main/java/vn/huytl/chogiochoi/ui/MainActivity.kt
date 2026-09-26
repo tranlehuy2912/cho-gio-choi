@@ -2,47 +2,38 @@ package vn.huytl.chogiochoi.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.ListenerRegistration
 import vn.huytl.chogiochoi.R
-import vn.huytl.chogiochoi.data.Defaults
 import vn.huytl.chogiochoi.data.Duong
 import vn.huytl.chogiochoi.data.Kho
-import vn.huytl.chogiochoi.data.LuotNgay
 import vn.huytl.chogiochoi.data.Nguoi
 import vn.huytl.chogiochoi.data.Nha
 import vn.huytl.chogiochoi.data.ViecNha
 import vn.huytl.chogiochoi.databinding.ActivityMainBinding
 import vn.huytl.chogiochoi.databinding.DialogCaiDatBinding
-import vn.huytl.chogiochoi.databinding.ItemNutBinding
 import vn.huytl.chogiochoi.databinding.ItemViecBinding
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 /**
- * Man hinh duy nhat cua app: may nut gio, bam mot cai la xong.
+ * Man hinh duy nhat cua app: giao viec nha cho Le Hoa, roi bam Xong tung viec.
  *
- * Khong PIN, khong hoi lai, khong huy - do la y muon cua nguoi dat hang. Doi lai
- * phai chac hai viec: nut chi an duoc mot lan moi ngay, va bam xong phai biet
- * ngay la lenh da di hay chua. Bam vao khoang khong roi ba tuong da cho la hong
- * nhat, vi luc do khong ai biet de sua.
+ * Truoc day tren cung con sau nut cho gio, tu 15 den 60 phut, moi ngay mot lan.
+ * Ngay 26/9/2026 Huy bo sau nut do: may ba chi con giao viec nha.
+ *
+ * Khong PIN, khong hoi lai - nguoi bam la ba. Doi lai bam xong phai biet ngay la da
+ * gui duoc hay chua. Bam vao khoang khong roi ba tuong da xong la hong nhat, vi luc
+ * do khong ai biet de sua.
  */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private var dangGui = false
-
-    /** Dang gui mot lan bam viec nha. Tach khoi [dangGui] vi hai duong doc lap. */
+    /** Dang gui mot lan bam viec nha, de khong bam chong len nhau. */
     private var dangGuiViec = false
 
     /** Cac viec ba dang tich de giao, khi chua co dot nao chay. */
@@ -66,25 +57,9 @@ class MainActivity : AppCompatActivity() {
      * Firestore da tra ban dau tien cua dot viec chua, tu luc mo app.
      *
      * Chua thi khoi viec nha chua hien gi: ve truoc la ra danh sach de chon, roi mot
-     * nhip sau doi sang dot dang chay va ca khoi nhay len tren nut gio - dung luc ba
-     * dang dua tay toi mot nut.
+     * nhip sau doi sang dot dang chay - dung luc ba dang dua tay toi mot nut.
      */
     private var daCoDot = false
-
-    /** Con so vua bam, giu lai de nut "Thu lai" biet gui lai bao nhieu phut. */
-    private var phutVuaBam = 0
-    private var loiVuaRoi = ""
-
-    /**
-     * Cau may cua chau noi lai, va luc no noi.
-     *
-     * Duong hop thu Telegram cu khong co cho nay: ba bam xong khong biet may ben kia
-     * co nhan duoc khong, co cap duoc gio khong, hay dang trong gio ngu. Bay gio
-     * tablet ghi cau tra loi xuong Firestore va may nay nghe duoc.
-     */
-    private var traLoi = ""
-    private var traLoiLuc = 0L
-    private var ngheTraLoi: ListenerRegistration? = null
 
     private var ngheViecNha: ListenerRegistration? = null
 
@@ -93,7 +68,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         chuaThanhBar()
-        dungNut()
 
         binding.btnCaiDat.setOnClickListener { hoiCaiDat() }
 
@@ -103,8 +77,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Ve lai o day chu khong chi o onCreate: may de mo qua dem thi hom sau mo
-        // ra phai thay nut, va 22:00 di qua thi nut phai tat.
+        // Ve ngay ban dang giu, roi listener mang ban moi ve: ba quay lai app sau mot
+        // luc thi dot viec co the da doi ben Bang dieu khien hay ben tablet.
         veLai()
         batNghe()
     }
@@ -112,8 +86,6 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         // Go lang nghe khi ba dong app lai. App nay khong co gi chay nen: dong la
         // het, khong ton mot giot pin nao cua may ba.
-        ngheTraLoi?.remove()
-        ngheTraLoi = null
         ngheViecNha?.remove()
         ngheViecNha = null
         ngheDanhSach?.remove()
@@ -121,27 +93,13 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    /**
-     * Nghe cau may cua chau noi lai.
-     *
-     * Chi nhan cau moi hon luc ba vua bam. Cau cu con nam do tren Firestore, va mo
-     * app ra sau nua ngay ma thay "Da cho 30 phut" nhay len thi ba tuong minh vua
-     * bam cai gi.
-     */
+    /** Nghe dot viec nha dang giao va danh sach viec chung. */
     private fun batNghe() {
-        ngheTraLoi?.remove()
         ngheViecNha?.remove()
         ngheDanhSach?.remove()
         if (!Nha.daGhep(this)) {
             daCoDot = true
             return
-        }
-
-        ngheTraLoi = Kho.ngheTraLoi(this) { tra ->
-            if (tra.luc <= traLoiLuc) return@ngheTraLoi
-            traLoi = tra.chu
-            traLoiLuc = tra.luc
-            veLai()
         }
 
         // Dot viec con nam do nghia la chua ai nhan; mat di nghia la tablet da khep
@@ -161,126 +119,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Do sau nut vao man hinh, hai cai mot hang.
-     *
-     * Dung tu [Defaults.MOC_PHUT] chu khong viet tay trong XML: sua danh sach phut
-     * o mot cho la ca man hinh theo ngay, khong co chuyen XML mot dang ma so phut
-     * gui di mot neo.
-     */
-    private fun dungNut() {
-        val moc = Defaults.MOC_PHUT
-        val cachNhau = (8 * resources.displayMetrics.density).toInt()
-        binding.boxNut.removeAllViews()
-
-        var i = 0
-        while (i < moc.size) {
-            val hang = LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { if (i > 0) topMargin = cachNhau }
-            }
-            for (cot in 0 until 2) {
-                val vt = i + cot
-                if (vt >= moc.size) break
-                val phut = moc[vt]
-                val nut = ItemNutBinding.inflate(layoutInflater, hang, false).root
-                nut.text = getString(R.string.nut_phut, phut)
-                (nut.layoutParams as LinearLayout.LayoutParams).apply {
-                    weight = 1f
-                    if (cot > 0) marginStart = cachNhau
-                }
-                nut.setOnClickListener { bam(phut) }
-                hang.addView(nut)
-            }
-            binding.boxNut.addView(hang)
-            i += 2
-        }
-    }
-
     /** Ve lai toan bo man hinh theo tinh hinh hien tai. */
     private fun veLai() {
         veViecNha()
-        xepLaiKhoi()
-        val the = binding
-        when {
-            dangGui -> hienThe(
-                tieuDe = getString(R.string.dang_gui),
-                chiTiet = getString(R.string.nut_phut, phutVuaBam),
-                mau = R.color.chu_nhat,
-                conNut = true
-            )
-
-            LuotNgay.daCho(this) -> {
-                val luc = SimpleDateFormat("HH:mm", Locale.forLanguageTag("vi-VN"))
-                    .format(Date(LuotNgay.lucCho(this)))
-                hienThe(
-                    tieuDe = getString(R.string.xong_tieu_de),
-                    chiTiet = getString(R.string.xong_chi_tiet, LuotNgay.phutDaCho(this), luc) +
-                        // Cau cua chinh may ben kia, neu no da kip noi. Dong nay moi
-                        // la cai bao that: o tren chi noi may nay da gui di.
-                        (if (traLoi.isBlank()) "" else "\n$traLoi") +
-                        "\n" + getString(R.string.xong_mai),
-                    mau = R.color.xong,
-                    conNut = false
-                )
-            }
-
-            !Nha.daGhep(this) -> hienThe(
+        // Chua noi may thi noi ra, kem nut sang Cai dat. Da noi roi thi the thong bao
+        // an di: moi chuyen cua viec nha da co dong chu ngay duoi tieu de.
+        if (Nha.daGhep(this)) {
+            binding.boxThe.visibility = View.GONE
+        } else {
+            hienThe(
                 tieuDe = getString(R.string.chua_noi_tieu_de),
                 chiTiet = getString(R.string.chua_noi_chi_tiet),
                 mau = R.color.hong,
-                conNut = false,
                 nhanNut = getString(R.string.cai_dat),
                 khiBam = { hoiCaiDat() }
             )
-
-            ngoaiGio() -> hienThe(
-                tieuDe = getString(R.string.ngoai_gio_tieu_de),
-                chiTiet = getString(
-                    R.string.ngoai_gio_chi_tiet,
-                    gioBayGio(), gioChuoi(Defaults.SOM_NHAT), gioChuoi(Defaults.MUON_NHAT)
-                ),
-                mau = R.color.hong,
-                conNut = false
-            )
-
-            loiVuaRoi.isNotEmpty() -> hienThe(
-                tieuDe = getString(R.string.hong_tieu_de),
-                chiTiet = loiVuaRoi,
-                mau = R.color.hong,
-                conNut = true,
-                nhanNut = getString(R.string.thu_lai),
-                khiBam = { bam(phutVuaBam) }
-            )
-
-            else -> {
-                the.boxThe.visibility = View.GONE
-                the.boxNut.visibility = View.VISIBLE
-                batNut(true)
-            }
         }
     }
 
-    /**
-     * Hien the thong bao.
-     *
-     * [conNut] la con cho bam nut gio nua hay khong. Gui hong thi van con - chua
-     * tru luot nen ba bam lai duoc ngay. Da cho xong roi thi khong.
-     */
     private fun hienThe(
         tieuDe: String,
         chiTiet: String,
         mau: Int,
-        conNut: Boolean,
         nhanNut: String? = null,
         khiBam: (() -> Unit)? = null
     ) {
-        binding.boxNut.visibility = if (conNut) View.VISIBLE else View.GONE
-        batNut(conNut && !dangGui)
-
         binding.boxThe.visibility = View.VISIBLE
         binding.txtTheTieuDe.text = tieuDe
         binding.txtTheTieuDe.setTextColor(ContextCompat.getColor(this, mau))
@@ -292,82 +155,6 @@ class MainActivity : AppCompatActivity() {
             binding.btnThe.visibility = View.VISIBLE
             binding.btnThe.text = nhanNut
             binding.btnThe.setOnClickListener { khiBam() }
-        }
-    }
-
-    /**
-     * Dang co dot viec chay thi day khoi viec nha len tren cac nut gio.
-     *
-     * Binh thuong nut gio o tren vi do la viec moi ngay cua ba, con viec nha thi
-     * thinh thoang. Nhung tu luc giao mot dot, cai ba can bam lai nam trong khoi
-     * viec - ma no o duoi day, phai cuon xuong moi toi, va cuon la thu kho nhat
-     * voi nguoi khong quen dung dien thoai.
-     */
-    private fun xepLaiKhoi() {
-        val dangGiao = dot?.cac?.isNotEmpty() == true
-        val cot = binding.boxNut.parent as? LinearLayout ?: return
-        val viTriNut = cot.indexOfChild(binding.boxNut)
-        val viTriTieuDe = cot.indexOfChild(binding.txtViecTieuDe)
-        if (viTriNut < 0 || viTriTieuDe < 0) return
-        // Dang dung thu tu can roi thi thoi: doi cho view moi lan ve lai la moi lan
-        // ban phim va con tro nhay mot cai.
-        if (dangGiao == (viTriTieuDe < viTriNut)) return
-
-        val khoiViec = listOf(
-            binding.txtViecTieuDe, binding.txtViecPhuDe, binding.boxViec, binding.btnGiaoViec
-        )
-        khoiViec.forEach { cot.removeView(it) }
-        val dat = if (dangGiao) cot.indexOfChild(binding.boxNut) else cot.indexOfChild(binding.boxThe)
-        khoiViec.forEachIndexed { i, v -> cot.addView(v, dat + i) }
-    }
-
-    private fun batNut(bat: Boolean) {
-        binding.boxNut.forEachNut { it.isEnabled = bat }
-    }
-
-    private inline fun LinearLayout.forEachNut(f: (MaterialButton) -> Unit) {
-        for (h in 0 until childCount) {
-            val hang = getChildAt(h) as? LinearLayout ?: continue
-            for (c in 0 until hang.childCount) {
-                (hang.getChildAt(c) as? MaterialButton)?.let(f)
-            }
-        }
-    }
-
-    /**
-     * Bam mot nut gio.
-     *
-     * Tru luot NGAY khi bam, roi tra lai neu Telegram tu choi. Ly do chon thu tu
-     * do nam o [LuotNgay.ghiNhan]: ghi sau thi mot lan app bi dong giua chung la
-     * so dem ben nay lech han voi thuc te ben tablet.
-     */
-    private fun bam(phut: Int) {
-        if (dangGui || phut <= 0) return
-        if (!Nha.daGhep(this)) {
-            hoiCaiDat()
-            return
-        }
-
-        dangGui = true
-        phutVuaBam = phut
-        loiVuaRoi = ""
-        traLoi = ""
-        // Ghi xong roi moi goi mang. Trong luc [dangGui] thi man hinh ve the
-        // "Dang gui..." chu khong ve the "Hom nay xong roi", nen ghi som o day
-        // khong lam ba tuong da gui xong.
-        LuotNgay.ghiNhan(this, phut)
-        veLai()
-
-        // Khong can luong nen: Firestore tu lo phan mang, ham nay tra ve ngay va
-        // goi lai [xong] tren luong chinh. Do la ly do ca doan withContext(IO) cu
-        // bien mat.
-        Kho.choGio(this, phut) { kq ->
-            dangGui = false
-            if (kq is Kho.KetQua.Hong) {
-                LuotNgay.traLuot(this)
-                loiVuaRoi = kq.viSao
-            }
-            veLai()
         }
     }
 
@@ -619,19 +406,6 @@ class MainActivity : AppCompatActivity() {
         }
         hop.show()
     }
-
-    /** Ngoai khung gio tablet con cap gio duoc. */
-    private fun ngoaiGio(): Boolean {
-        val c = Calendar.getInstance()
-        val phut = c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE)
-        return phut < Defaults.SOM_NHAT || phut >= Defaults.MUON_NHAT
-    }
-
-    private fun gioBayGio(): String =
-        SimpleDateFormat("HH:mm", Locale.forLanguageTag("vi-VN")).format(Date())
-
-    private fun gioChuoi(phutTrongNgay: Int): String =
-        "%02d:%02d".format(phutTrongNgay / 60, phutTrongNgay % 60)
 
     /** Tu Android 15 app tran ra sau thanh trang thai, phai tu chua lai. */
     private fun chuaThanhBar() {
