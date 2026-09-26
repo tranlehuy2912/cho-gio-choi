@@ -1,7 +1,5 @@
 package vn.huytl.chogiochoi.data
 
-import android.content.Context
-import org.json.JSONArray
 import kotlin.random.Random
 
 /**
@@ -25,7 +23,7 @@ import kotlin.random.Random
  * document hop/viecnha, moi lan bam la mot transaction, xem [Kho.giaoViec].
  *
  * Danh sach viec de chon cung vay: nam o hop/danhsachviec, Ba Huy sua tren Bang
- * dieu khien. Danh sach trong may chi con de dung tam, xem [danhSachTrongMay].
+ * dieu khien, may nay chi doc. Chua doc duoc thi dung [MAC_DINH].
  */
 object ViecNha {
 
@@ -59,7 +57,13 @@ object ViecNha {
         fun guiLai(bayGio: Long) = copy(luc = bayGio)
     }
 
-    /** Danh sach mac dinh, khi chua co danh sach nao khac. */
+    /**
+     * Danh sach khi chua doc duoc danh sach chung: Ba Huy chua luu lan nao, luat
+     * Firestore chua cho doc, hay may chua tung co mang.
+     *
+     * Giong het MAC_DINH ben Bang dieu khien, de luc chua co danh sach chung thi hai
+     * may van hien cung mot danh sach.
+     */
     val MAC_DINH = listOf(
         Viec("Quét nhà lau nhà", 10),
         Viec("Rửa chén", 10),
@@ -69,25 +73,6 @@ object ViecNha {
 
     // ------------------------------------------------------------- danh sach
 
-    /**
-     * Danh sach dang nam trong may nay.
-     *
-     * Ban app truoc cho Ba Huy sua danh sach ngay tren may ba, va danh sach do nam o
-     * day. Gio no con hai viec: dung tam khi chua doc duoc danh sach chung (chua dan
-     * luat Firestore moi, hay may chua tung co mang); va la ban may nay gui len lan
-     * dau khi Firestore chua co danh sach nao, de nhung viec Ba Huy da sua khong mat.
-     */
-    fun danhSachTrongMay(context: Context): List<Viec> {
-        val chu = sp(context).getString(K_DANH_SACH, null) ?: return MAC_DINH
-        return runCatching {
-            val a = JSONArray(chu)
-            (0 until a.length()).map { i ->
-                val o = a.getJSONObject(i)
-                Viec(o.getString("ten"), o.optInt("phut", 10))
-            }
-        }.getOrDefault(MAC_DINH)
-    }
-
     /** Doc truong [Duong.F_VIEC] cua hop/danhsachviec. Muc thieu ten thi bo. */
     fun docDanhSach(cac: List<*>?): List<Viec> =
         cac.orEmpty().filterIsInstance<Map<*, *>>().mapNotNull { o ->
@@ -95,9 +80,6 @@ object ViecNha {
                 ?: return@mapNotNull null
             Viec(ten, docPhut(o[Duong.F_PHUT]))
         }
-
-    fun banDanhSach(cac: List<Viec>): List<Map<String, Any>> =
-        cac.map { mapOf(Duong.F_TEN to it.ten, Duong.F_PHUT to it.phut) }
 
     // ---------------------------------------------------------------- dot viec
 
@@ -152,9 +134,4 @@ object ViecNha {
 
     /** Tablet cung keo so phut ve khoang nay, xem ViecNha.tuBan ben nop-bai. */
     private fun docPhut(v: Any?): Int = ((v as? Number)?.toInt() ?: 0).coerceIn(0, 240)
-
-    private fun sp(context: Context) =
-        context.getSharedPreferences("chogiochoi", Context.MODE_PRIVATE)
-
-    private const val K_DANH_SACH = "viec_danh_sach"
 }

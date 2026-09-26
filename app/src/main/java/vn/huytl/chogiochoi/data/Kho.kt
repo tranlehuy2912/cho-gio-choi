@@ -8,7 +8,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.MetadataChanges
 
 /**
  * Cua duy nhat di ra Firestore.
@@ -21,7 +20,7 @@ import com.google.firebase.firestore.MetadataChanges
  *
  * MAY NAY KHONG PHAI NGUOI NHA DAY DU. Uid cua no nam trong uidsPhu, va luat ben
  * firestore.rules chi cho danh sach do lam may viec: doc va ghi hop/viecnha, doc
- * hop/danhsachviec va tao no mot lan khi chua co, doc hop/trangthai. Truoc 26/9/2026
+ * hop/danhsachviec, doc hop/trangthai. Truoc 26/9/2026
  * con duoc tao lenh CHO cho sau nut cho gio; ngay do ca nut lan cua trong luat deu
  * bo. Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh
  * nay khong hien nut do ra.
@@ -205,51 +204,24 @@ object Kho {
     private class LoiViec(chu: String) : Exception(chu)
 
     /**
-     * Nghe danh sach viec chung o hop/danhsachviec.
+     * Nghe danh sach viec chung o hop/danhsachviec. Ba Huy sua tren Bang dieu khien,
+     * may nay chi doc.
      *
-     * [khi] nhan null khi chua co danh sach nao doc duoc: document chua co, hay luat
-     * tren Firestore chua cho may nay doc (chua dan firestore.rules moi). Luc do man
-     * hinh dung danh sach trong may.
-     *
-     * Document chua co, va chinh may chu noi vay chu khong phai bo nho dem luc mat
-     * mang, thi gui danh sach trong may len. Ban app truoc cho Ba Huy sua danh sach
-     * tren may ba; khong gui len thi nhung viec do mat khi hai may dung chung mot
-     * danh sach. Luat chi cho may ba TAO document nay, nen neu Bang dieu khien da
-     * luu truoc thi lan gui nay bi tu choi va danh sach cua Ba Huy giu nguyen.
+     * [khi] nhan null khi chua co danh sach nao doc duoc: Ba Huy chua luu lan nao, hay
+     * luat tren Firestore chua cho may nay doc (chua dan firestore.rules moi). Luc do
+     * man hinh dung [ViecNha.MAC_DINH].
      */
     fun ngheDanhSachViec(
         context: Context,
         khi: (List<ViecNha.Viec>?) -> Unit
-    ): ListenerRegistration? {
-        val h = hop(context, Duong.D_DANH_SACH_VIEC) ?: return null
-        // Nghe ca doi metadata: bo nho dem luc mat mang bao "chua co", roi may chu bao
-        // lai dung cau do. Khong nghe thi lan thu hai khong toi, va may nay khong bao
-        // gio biet la phai gui danh sach len.
-        return h.addSnapshotListener(MetadataChanges.INCLUDE) { snap, loi ->
+    ): ListenerRegistration? =
+        hop(context, Duong.D_DANH_SACH_VIEC)?.addSnapshotListener { snap, loi ->
             if (loi != null) {
                 Log.w(TAG, "nghe danh sach viec hong", loi)
                 return@addSnapshotListener khi(null)
             }
-            if (snap == null) return@addSnapshotListener
-            if (!snap.exists()) {
-                if (!snap.metadata.isFromCache && !daGuiDanhSach) {
-                    daGuiDanhSach = true
-                    h.set(
-                        mapOf(
-                            Duong.F_VIEC to ViecNha.banDanhSach(ViecNha.danhSachTrongMay(context)),
-                            Duong.F_LUC to System.currentTimeMillis(),
-                            Duong.F_AI to Nguoi.BA_NOI
-                        )
-                    ).addOnFailureListener { Log.w(TAG, "gui danh sach viec hong", it) }
-                }
-                return@addSnapshotListener khi(null)
-            }
-            khi(ViecNha.docDanhSach(snap.get(Duong.F_VIEC) as? List<*>).takeIf { it.isNotEmpty() })
+            khi(ViecNha.docDanhSach(snap?.get(Duong.F_VIEC) as? List<*>).takeIf { it.isNotEmpty() })
         }
-    }
-
-    /** Da gui danh sach trong may len chua, trong lan chay nay. Mot lan la du. */
-    private var daGuiDanhSach = false
 
     // ------------------------------------------------------------------ nghe
 

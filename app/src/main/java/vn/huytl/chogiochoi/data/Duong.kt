@@ -66,10 +66,8 @@ object Duong {
     /**
      * Danh sach viec de chon khi giao: ten va so phut, o truong [F_VIEC].
      *
-     * Bang dieu khien ghi. May ba chi doc, va duoc tao document nay dung mot lan khi
-     * no chua co, bang danh sach dang nam trong may ba - ban app truoc giu danh sach
-     * o do, Ba Huy sua bang cach cam may ba. Luat ben firestore.rules chan may ba sua
-     * mot danh sach da co.
+     * Bang dieu khien ghi, may ba chi doc. Chua co document nay thi hai may cung dung
+     * mot danh sach mac dinh viet san trong app, nen van hien giong nhau.
      */
     const val D_DANH_SACH_VIEC = "danhsachviec"
 

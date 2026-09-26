@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
      */
     private var dot: ViecNha.Dot? = null
 
-    /** Danh sach viec chung tren Firestore. null la chua doc duoc, dung ban trong may. */
+    /** Danh sach viec chung tren Firestore. null la chua doc duoc, dung danh sach mac dinh. */
     private var danhSachChung: List<ViecNha.Viec>? = null
     private var ngheDanhSach: ListenerRegistration? = null
 
@@ -241,13 +241,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Danh sach de chon: ban chung tren Firestore, chua doc duoc thi ban trong may.
+     * Danh sach de chon: ban chung tren Firestore, chua doc duoc thi danh sach mac dinh.
      *
-     * Cat o [Duong.TOI_DA_VIEC] du Bang dieu khien da khong cho luu dai hon: ban
-     * trong may la do ban app truoc de lai, luc do chua co tran nay.
+     * Cat o [Duong.TOI_DA_VIEC] cho chac. Bang dieu khien da khong cho luu dai hon,
+     * nhung man nay la cho ba bam, danh sach dai qua phai cuon moi thay het.
      */
     private fun danhSach(): List<ViecNha.Viec> =
-        (danhSachChung ?: ViecNha.danhSachTrongMay(this)).take(Duong.TOI_DA_VIEC)
+        (danhSachChung ?: ViecNha.MAC_DINH).take(Duong.TOI_DA_VIEC)
 
     private fun themDongViec(
         ten: String,
