@@ -101,7 +101,6 @@ object Duong {
     const val BAI = "bai"
     const val NHAT_KY = "nhatky"
     const val HOI_AI = "hoiai"
-    const val CHAT = "chat"
     const val GHEP = "ghep"
 
     /**
@@ -273,10 +272,6 @@ object Duong {
      */
     const val F_DAN_DO = "danDo"
 
-    // --- truong trong chat/{id} ---
-    const val F_TU = "tu"
-    const val F_DA_DOC = "daDoc"
-
     // --- truong trong nhatky/{ngay} ---
     const val F_DONG = "dong"
 
@@ -291,6 +286,7 @@ object Duong {
      */
     const val F_DOAN = "doan"
     const val F_GOI = "goi"
+    const val F_TU = "tu"
     const val F_DEN = "den"
 
     /**
@@ -371,9 +367,6 @@ object Lenh {
     /** Doi mot muc cau hinh. [Duong.F_CHU] la ten muc, gia tri o truong "giaTri". */
     const val CAI_DAT = "CAIDAT"
 
-    /** Nhan mot cau cho con, hien thanh thong bao co tieng tren tablet. */
-    const val NHAN = "NHAN"
-
     /**
      * Cong gio cho mot dot viec nha ma tablet da bo lo.
      *
@@ -451,8 +444,7 @@ object Lenh {
      * /tinco ben Telegram.
      *
      * Ba Huy chep tin trong nhom lop Zalo roi dan vao Bang dieu khien. Noi dung o
-     * [Duong.F_CHU]. Khac [NHAN]: tin khong vao khung chat cua con ma vao kho tin cua
-     * co, noi ba noi cam tablet len cung doc duoc.
+     * [Duong.F_CHU]. Tin vao kho tin cua co, noi ba noi cam tablet len cung doc duoc.
      *
      * Khong bi bo vi qua [Duong.QUA_CU_MS] nhu cac lenh khac: tin gui toi qua ma sang
      * nay tablet moi mo may thi van phai hien, va hien dung gio Ba Huy gui.
