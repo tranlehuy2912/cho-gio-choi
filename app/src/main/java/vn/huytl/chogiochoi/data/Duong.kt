@@ -49,6 +49,15 @@ object Duong {
      */
     const val D_VIEC_NHA = "viecnha"
 
+    /**
+     * Vo dan do cua ngay, ban dang con hieu luc tren tablet. Chi tablet ghi.
+     *
+     * Cung dang voi [F_DAN_DO], them [F_LUC] la luc luu. Khong co ban nao con hieu luc
+     * thi tablet xoa document nay. Bang dieu khien doc no de hien the "Nhờ Claude đọc
+     * vở" khi ban do chi co anh (chuaDoc), roi gui ket qua ve bang lenh [Lenh.DOC_VO].
+     */
+    const val D_DAN_DO = "dando"
+
     const val LENH = "lenh"
     const val BAI = "bai"
     const val NHAT_KY = "nhatky"
@@ -198,11 +207,17 @@ object Duong {
     /**
      * Vo dan do con da soat tu dau buoi, ma lan nop nay dung thay cho trang vo.
      *
-     * Map { ngay, cacBai, dongKhac, fileId }. Tablet chep luc con nop, khi lan nop do
-     * khong chup trang vo. ngay la ngay ghi tren vo, dang yyyy-MM-dd. cacBai la cac dong
-     * con tich la bai tap, rong la hom do co khong giao bai tap nao. fileId la anh trang
-     * vo tren Telegram, vang la chua gui duoc; co thi anh do cung nam trong [F_ANH] voi
-     * khau DAN_DO, de Bang dieu khien ban cu van gui trang vo cho Claude doc.
+     * Map { ngay, cacBai, dongKhac, fileId, chuaDoc, nguon, chupLuc }. Tablet chep luc con
+     * nop, khi lan nop do khong chup trang vo. ngay la ngay ghi tren vo, dang yyyy-MM-dd.
+     * cacBai la cac dong con tich la bai tap, rong la hom do co khong giao bai tap nao.
+     * fileId la anh trang vo tren Telegram, vang la chua gui duoc; co thi anh do cung nam
+     * trong [F_ANH] voi khau DAN_DO, de Bang dieu khien ban cu van gui trang vo cho Claude
+     * doc.
+     *
+     * chuaDoc true la chi co anh, chua ai doc ra chu: cacBai rong nhung chua biet co giao
+     * gi, va ngay tam la ngay chup. nguon la ai doc ra danh sach: CON (con soat ban may
+     * doc), CLAUDE (Claude doc qua lenh [Lenh.DOC_VO]), LUCCHAM (doc o lan cham bai dau
+     * tien). chupLuc la luc chup tam anh, giu nguyen khi doc lai hay sua chu.
      *
      * Co truong nay thi loi nho gui Claude chep san ngay va danh sach bai, y nhu cau
      * lenh cua may cham, va Claude chi con noi con lam het chua, cau nao thuoc bai co
@@ -334,7 +349,9 @@ object Lenh {
      * duyet.
      *
      * Bai co [Duong.F_DAN_DO] thi coAnhDanDo la true, va tablet lay ngay cung danh sach
-     * bai tu ban no giu luc con nop. Tu Claude chi lay lamHetDanDo va trongDanDo.
+     * bai tu ban no giu luc con nop. Tu Claude chi lay lamHetDanDo va trongDanDo. Ban do
+     * chi co anh (chuaDoc) thi khong co danh sach: tablet lay ca ngay lan bai tu Claude,
+     * roi giu lai lam vo dan do cua ngay cho cac bai sau.
      *
      * Khac [SUA_CHAM]: lenh kia sua mot ban cham da co, lenh nay la ban cham dau tien.
      */
@@ -352,6 +369,15 @@ object Lenh {
      * nay tablet moi mo may thi van phai hien, va hien dung gio Ba Huy gui.
      */
     const val TIN_CO = "TINCO"
+
+    /**
+     * Ket qua Claude doc vo dan do, cho ban chi co anh (may doc khong duoc).
+     *
+     * "giaTri" la { chupLuc, ngay, cacDong: [{ chu, bai }] }. chupLuc lay tu
+     * [Duong.D_DAN_DO], de tablet chi ghi vao dung tam anh do: con chup tam khac, hay da
+     * tu doc lai va soat xong, thi tablet bo ket qua nay. Chi Ba Huy go duoc.
+     */
+    const val DOC_VO = "DOCVO"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
