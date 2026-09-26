@@ -81,6 +81,22 @@ object Duong {
      */
     const val TOI_DA_VIEC = 5
 
+    /**
+     * So ghi Le Hoa dung app gi, tu may gio den may gio (so NhatKySuDung ben tablet).
+     * Chi tablet ghi.
+     *
+     * Mot document cho ca so, khong phai moi ngay mot document nhu [NHAT_KY]: lan nao
+     * tablet cung ghi de ca ban, va ban do chi co [F_GIU_NGAY] ngay gan nhat. Nho vay
+     * ngay cu roi khoi Firestore o lan ghi sau, y nhu no roi khoi tablet, khong ai
+     * phai di xoa.
+     *
+     * Tablet chi ghi khi dien thoai go [Lenh.PING]. So tren tablet doi vai phut mot
+     * lan trong luc con dung may; day theo tung lan doi thi ton vai tram luot ghi mot
+     * ngay ma phan lon khong ai doc. Con mo Bang dieu khien ra la da go PING, nen luc
+     * Ba Huy nhin thi so da moi.
+     */
+    const val D_SU_DUNG = "sudung"
+
     const val LENH = "lenh"
     const val BAI = "bai"
     const val NHAT_KY = "nhatky"
@@ -263,6 +279,39 @@ object Duong {
 
     // --- truong trong nhatky/{ngay} ---
     const val F_DONG = "dong"
+
+    // --- truong trong hop/sudung ---
+
+    /**
+     * Cac khoang con cam may: [{ goi, tu, den }], xep theo tu. goi la ten goi app, tu
+     * va den la epoch ms theo gio tablet. Khoang con dang mo luc day thi den la luc day.
+     *
+     * Chia doi man hinh thi hai app cung tren man hinh, va hai khoang chong len nhau.
+     * Cong tong ca ngay thi phai gop phan chong nhau truoc.
+     */
+    const val F_DOAN = "doan"
+    const val F_GOI = "goi"
+    const val F_DEN = "den"
+
+    /**
+     * Ten doc duoc cua tung app co trong [F_DOAN]: [{ goi, ten }], cung dang voi danh
+     * sach trong hop/danhsachapp.
+     *
+     * Dien thoai khong cai cac app do nen khong tu tra ten duoc. App da go khoi tablet
+     * thi ten la chinh ten goi.
+     */
+    const val F_APP = "app"
+
+    /** Tablet giu so bao nhieu ngay, tinh ca hom nay. */
+    const val F_GIU_NGAY = "giuNgay"
+
+    /**
+     * Dich vu canh app tren tablet co dang chay luc day khong.
+     *
+     * Tat thi tablet khong ghi duoc gi, ma cung khong chan gi. So trong tron luc do
+     * nhin giong nhu hom nay khong ai dung may, nen ben doc phai noi ra.
+     */
+    const val F_DANG_GHI = "dangGhi"
 }
 
 /**
@@ -360,6 +409,9 @@ object Lenh {
      *
      * Khong tra loi gi vao o traLoi: day khong phai viec Ba Huy bam, khong co gi de
      * bao. Ban trang thai moi chinh la cau tra loi.
+     *
+     * Tablet day kem so dung app o [Duong.D_SU_DUNG], va day la luc duy nhat no day
+     * so do.
      */
     const val PING = "PING"
 
