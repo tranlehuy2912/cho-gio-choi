@@ -21,10 +21,10 @@ import com.google.firebase.firestore.MetadataChanges
  *
  * MAY NAY KHONG PHAI NGUOI NHA DAY DU. Uid cua no nam trong uidsPhu, va luat ben
  * firestore.rules chi cho danh sach do lam may viec: doc va ghi hop/viecnha, doc
- * hop/danhsachviec va tao no mot lan khi chua co, doc hop/trangthai, tao lenh kieu
- * CHO. Lenh CHO la cua sau nut cho gio da bo ngay 26/9/2026, app nay khong con go.
- * Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh nay
- * khong hien nut do ra.
+ * hop/danhsachviec va tao no mot lan khi chua co, doc hop/trangthai. Truoc 26/9/2026
+ * con duoc tao lenh CHO cho sau nut cho gio; ngay do ca nut lan cua trong luat deu
+ * bo. Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh
+ * nay khong hien nut do ra.
  *
  * Khong dung Task.await() vi nhu the phai keo them kotlinx-coroutines-play-services
  * chi de cho vai lan goi. Callback la du.

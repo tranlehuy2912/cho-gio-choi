@@ -330,8 +330,8 @@ class MainActivity : AppCompatActivity() {
      * hinh tablet tu tuan truoc khong dung lai duoc.
      *
      * VAO UIDSPHU CHU KHONG PHAI UIDS. May nay gui kem Nguoi.BA_NOI luc xin, va do
-     * la thu quyet dinh: uidsPhu chi cho gio va giao viec nha duoc, con uids thi go
-     * duoc ca lenh khoa tablet va tat quan tri thiet bi.
+     * la thu quyet dinh: uidsPhu chi giao viec nha duoc, con uids thi go duoc ca lenh
+     * khoa tablet va tat quan tri thiet bi.
      */
     private fun hoiCaiDat() {
         val db = DialogCaiDatBinding.inflate(layoutInflater)

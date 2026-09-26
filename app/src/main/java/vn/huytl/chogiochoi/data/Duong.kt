@@ -106,9 +106,10 @@ object Duong {
      * Nguoi nha quyen han: may ba noi.
      *
      * Tach khoi [F_UIDS] vi hai muc quyen khac han. Ai o trong [F_UIDS] thi go duoc
-     * moi lenh, ke ca KHOA may hay tat quan tri thiet bi. Ai o day thi chi cho gio
-     * va giao viec nha - luat ben firestore.rules chan tan goc, chu khong trong vao
-     * viec app ben may ba khong hien nhung nut kia ra.
+     * moi lenh, ke ca KHOA may hay tat quan tri thiet bi. Ai o day thi chi giao viec
+     * nha - luat ben firestore.rules chan tan goc, chu khong trong vao viec app ben
+     * may ba khong hien nhung nut kia ra. Tu 26/9/2026 danh sach nay khong tao duoc
+     * lenh nao, ke ca [Lenh.CHO].
      */
     const val F_UIDS_PHU = "uidsPhu"
 
@@ -182,9 +183,10 @@ object Duong {
     /**
      * Ai go lenh nay, xem [Nguoi].
      *
-     * Tablet phai biet vi hai nguoi khong cung quyen: ba noi mot luot moi ngay va
-     * chi cho gio duoc, Ba Huy thi khong gioi han. No con quyet ca cau ghi vao nhat
-     * ky, thu ma toi lam Le Hoa doc.
+     * Tablet phai biet vi hai nguoi khong cung quyen: lenh cua ba noi chi duoc la cho
+     * gio, mot luot moi ngay, Ba Huy thi khong gioi han. Tu 26/9/2026 luat khong cho
+     * may ba tao lenh nao nua, nen lenh mang banoi chi con la lenh cu. No con quyet ca
+     * cau ghi vao nhat ky, thu ma toi lam Le Hoa doc.
      *
      * Thieu truong nay thi coi la Ba Huy: ban Bang dieu khien cu chua gui gi ca, ma
      * may ba thi luon gui.
@@ -294,7 +296,8 @@ object Lenh {
     /**
      * Cho choi ngay, khong tru han muc ngay. Dang choi thi cong them.
      *
-     * Lenh duy nhat may ba noi go duoc, xem [Duong.F_UIDS_PHU].
+     * Truoc 26/9/2026 day la lenh duy nhat may ba noi go duoc. Gio may ba khong go
+     * lenh nao, xem [Duong.F_UIDS_PHU].
      */
     const val CHO = "CHO"
 
@@ -370,7 +373,7 @@ object Lenh {
      * roi cap gio va ghi so. Cau da duoc tra gio thi bo qua, nen gui lai lenh nay cung
      * khong cong gio hai lan.
      *
-     * Chi Ba Huy go duoc. May ba noi chi co lenh [CHO].
+     * Chi Ba Huy go duoc.
      */
     const val SUA_CHAM = "SUACHAM"
 
