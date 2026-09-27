@@ -227,6 +227,13 @@ object Duong {
     const val F_LUC = "luc"
     const val F_TRANG_THAI = "trangThai"
     const val F_SO_PHUT = "soPhut"
+
+    /**
+     * Bai cham xong trong gio ngu: luc tablet se cong [F_SO_PHUT] phut, tuc la luc het gio
+     * ngu. Di kem trang thai DUYET. Tablet cong xong thi xoa truong nay. Xem CongSang ben
+     * nop-bai.
+     */
+    const val F_CONG_LUC = "congLuc"
     const val F_ANH = "anh"
     const val F_CHAM = "cham"
     const val F_MESSAGE_ID = "messageId"
@@ -421,11 +428,11 @@ object Lenh {
     const val SUA_CHAM = "SUACHAM"
 
     /**
-     * Cham bai theo ket qua Claude, dung khi may chua cham bai do: tablet tat cham AI,
-     * hay AI hong luc con nop.
+     * Cham bai theo ket qua Claude, dung khi may chua cham bai do (tablet tat cham AI,
+     * hay AI hong luc con nop), hay may cham roi ma bai van cho duyet.
      *
      * Kem [Duong.F_BAI_ID]. "giaTri" la { cac, ngayDanDo, baiDuocGiao, lamHetDanDo,
-     * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, mucDo, de, dang,
+     * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, de, dang,
      * trongDanDo }]. Tablet chay dung cac buoc nhu luc AI cham xong: tinh phut theo luat,
      * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
      * duyet.
