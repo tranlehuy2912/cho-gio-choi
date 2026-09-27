@@ -93,10 +93,10 @@
                 android:id="@+id/txtTheTieuDe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/xong"
+                android:text="@string/chua_noi_tieu_de"
+                android:textColor="@color/hong"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                tools:text="Chưa nối máy" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtTheChiTiet"
@@ -104,19 +104,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="4dp"
+                android:text="@string/chua_noi_chi_tiet"
                 android:textColor="@color/chu"
-                android:textSize="19sp"
-                tools:text="Nhờ Ba Huy mở Cài đặt và nối máy này với máy của Lê Hòa." />
+                android:textSize="19sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnThe"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="18dp"
-                android:textSize="19sp"
-                android:visibility="gone"
-                tools:text="Cài đặt"
-                tools:visibility="visible" />
+                android:text="@string/cai_dat"
+                android:textSize="19sp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

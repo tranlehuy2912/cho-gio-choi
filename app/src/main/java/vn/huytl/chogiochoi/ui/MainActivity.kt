@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.btnThe.setOnClickListener { hoiCaiDat() }
         chuaThanhBar()
 
         binding.btnCaiDat.setOnClickListener { hoiCaiDat() }
@@ -148,39 +149,9 @@ class MainActivity : AppCompatActivity() {
     private fun veLai() {
         veViecNha()
         // Chua noi may thi noi ra, kem nut sang Cai dat. Da noi roi thi the thong bao
-        // an di: moi chuyen cua viec nha da co dong chu ngay duoi tieu de.
-        if (Nha.daGhep(this)) {
-            binding.boxThe.visibility = View.GONE
-        } else {
-            hienThe(
-                tieuDe = getString(R.string.chua_noi_tieu_de),
-                chiTiet = getString(R.string.chua_noi_chi_tiet),
-                mau = R.color.hong,
-                nhanNut = getString(R.string.cai_dat),
-                khiBam = { hoiCaiDat() }
-            )
-        }
-    }
-
-    private fun hienThe(
-        tieuDe: String,
-        chiTiet: String,
-        mau: Int,
-        nhanNut: String? = null,
-        khiBam: (() -> Unit)? = null
-    ) {
-        binding.boxThe.visibility = View.VISIBLE
-        binding.txtTheTieuDe.text = tieuDe
-        binding.txtTheTieuDe.setTextColor(ContextCompat.getColor(this, mau))
-        binding.txtTheChiTiet.text = chiTiet
-
-        if (nhanNut == null || khiBam == null) {
-            binding.btnThe.visibility = View.GONE
-        } else {
-            binding.btnThe.visibility = View.VISIBLE
-            binding.btnThe.text = nhanNut
-            binding.btnThe.setOnClickListener { khiBam() }
-        }
+        // an di: moi chuyen cua viec nha da co dong chu ngay duoi tieu de. Chu va nut
+        // cua the nam san trong layout, vi gio the chi con dung mot canh nay.
+        binding.boxThe.visibility = if (Nha.daGhep(this)) View.GONE else View.VISIBLE
     }
 
     // ------------------------------------------------------------------ viec nha
