@@ -20,7 +20,7 @@ import com.google.firebase.firestore.ListenerRegistration
  *
  * MAY NAY KHONG PHAI NGUOI NHA DAY DU. Uid cua no nam trong uidsPhu, va luat ben
  * firestore.rules chi cho danh sach do lam may viec: doc va ghi hop/viecnha, doc
- * hop/danhsachviec, doc hop/trangthai. Truoc 26/9/2026
+ * hop/danhsachviec. Doc hop/trangthai bo ngay 27/9/2026. Truoc 26/9/2026
  * con duoc tao lenh CHO cho sau nut cho gio; ngay do ca nut lan cua trong luat deu
  * bo. Bam nham cai gi khac thi Firestore tu choi, khong phai trong vao viec man hinh
  * nay khong hien nut do ra.
