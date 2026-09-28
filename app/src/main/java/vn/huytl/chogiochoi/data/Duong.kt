@@ -252,9 +252,15 @@ object Duong {
     /**
      * Cac cau con khai truoc khi chup, kem de tung cau.
      *
-     * Map { tenNguon, bai, mon, onTap, cac: [{ ma, cauId, de, dang }] }. Tablet ghi luc
-     * con nop. Co no thi loi nho gui Claude co de bai ngay ca khi may khong cham, va ket
-     * qua Claude cham ve khop duoc voi dung cau trong sach.
+     * Map { tenNguon, bai, mon, onTap, suaBai, cac: [{ ma, cauId, de, dang }] }. Tablet
+     * ghi luc con nop. Co no thi loi nho gui Claude co de bai cua tung cau, va ket qua
+     * Claude cham ve khop duoc voi dung cau trong sach.
+     *
+     * suaBai (tu 28/9/2026) chi co o lan con NOP LAI cac cau sai cua mot bai: la ma bai do.
+     * Luc do cac chi gom cac cau sai can nop lai, cau ngoai sach co cauId rong va de chep
+     * tu ban cham cu. Loi nho dan Claude chi cham cau trong cac, va tablet bo cau ngoai
+     * danh sach: con sua de len trang vo cu, cau da dung tu lan truoc khong duoc tra gio
+     * lan hai.
      */
     const val F_KHAI = "khai"
 
@@ -273,9 +279,8 @@ object Duong {
      * doc), CLAUDE (Claude doc qua lenh [Lenh.DOC_VO]), LUCCHAM (doc o lan cham bai dau
      * tien). chupLuc la luc chup tam anh, giu nguyen khi doc lai hay sua chu.
      *
-     * Co truong nay thi loi nho gui Claude chep san ngay va danh sach bai, y nhu cau
-     * lenh cua may cham, va Claude chi con noi con lam het chua, cau nao thuoc bai co
-     * giao.
+     * Co truong nay thi loi nho gui Claude chep san ngay va danh sach bai, va Claude chi
+     * con noi con lam het chua, cau nao thuoc bai co giao.
      */
     const val F_DAN_DO = "danDo"
 
@@ -428,12 +433,12 @@ object Lenh {
     const val SUA_CHAM = "SUACHAM"
 
     /**
-     * Cham bai theo ket qua Claude, dung khi may chua cham bai do (tablet tat cham AI,
-     * hay AI hong luc con nop), hay may cham roi ma bai van cho duyet.
+     * Cham bai theo ket qua Claude. Tu 28/9/2026 day la duong cham duy nhat: tablet khong
+     * tu cham nua. Dung cho bai chua cham, hay da cham ma van cho duyet.
      *
      * Kem [Duong.F_BAI_ID]. "giaTri" la { cac, ngayDanDo, baiDuocGiao, lamHetDanDo,
      * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, de, dang,
-     * trongDanDo }]. Tablet chay dung cac buoc nhu luc AI cham xong: tinh phut theo luat,
+     * trongDanDo }]. Tablet tinh phut theo luat,
      * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
      * duyet.
      *
