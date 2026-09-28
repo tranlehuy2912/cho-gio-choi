@@ -438,7 +438,8 @@ object Lenh {
      *
      * Kem [Duong.F_BAI_ID]. "giaTri" la { cac, ngayDanDo, baiDuocGiao, lamHetDanDo,
      * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, de, dang,
-     * trongDanDo }]. Tablet tinh phut theo luat,
+     * trongDanDo, loaiLoi }]. loaiLoi (tu 28/9/2026) la kieu sai cua cau sai, mot trong bay
+     * nhan cua LoaiLoi ben tablet; thieu hay la thi tablet tu xu. Tablet tinh phut theo luat,
      * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
      * duyet.
      *
