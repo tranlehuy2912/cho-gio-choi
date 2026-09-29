@@ -429,10 +429,12 @@ object Lenh {
     /**
      * Sua ban cham: nhung cau may bao sai ma Claude cham lai la dung.
      *
-     * Kem [Duong.F_BAI_ID], va danh sach cau o truong "giaTri": [{ ma, de }]. Tablet
-     * chi sua cau dang cho sua, tinh phut theo dung luat cong gio nhu luc may tu cham,
-     * roi cap gio va ghi so. Cau da duoc tra gio thi bo qua, nen gui lai lenh nay cung
-     * khong cong gio hai lan.
+     * Kem [Duong.F_BAI_ID], va danh sach cau o truong "giaTri": [{ ma, de, soDong }].
+     * soDong la so dong Claude ghi o lan cham lai (tu 29/9/2026; ban cu khong gui, tablet
+     * doc la 0 va lay so dong bai lam trong so). Tablet chi sua cau dang cho sua, tinh phut
+     * theo dung luat cong gio nhu luc may tu cham, roi cap gio va ghi so. Cau dung ma van
+     * khong co so dong thi tablet khong ghi, cau van cho sua. Cau da duoc tra gio thi bo
+     * qua, nen gui lai lenh nay cung khong cong gio hai lan.
      *
      * Chi Ba Huy go duoc.
      */
