@@ -55,13 +55,30 @@ object Duong {
     const val D_VIEC_NHA = "viecnha"
 
     /**
-     * Vo dan do cua ngay, ban dang con hieu luc tren tablet. Chi tablet ghi.
+     * Vo dan do cua buoi vua hoc, ban dang con hieu luc tren tablet. Chi tablet ghi.
      *
-     * Cung dang voi [F_DAN_DO], them [F_LUC] la luc luu. Khong co ban nao con hieu luc
-     * thi tablet xoa document nay. Bang dieu khien doc no de hien the "Nhờ Claude đọc
-     * vở" khi ban do chi co anh (chuaDoc), roi gui ket qua ve bang lenh [Lenh.DOC_VO].
+     * Cung dang voi [F_DAN_DO], them [F_LUC] la luc luu. Ban vo song toi luc vao buoi
+     * hoc ke tiep; khong con ban nao thi tablet xoa document nay. Bang dieu khien doc no
+     * de hien the "Nhờ Claude đọc vở" khi ban do chi co anh (chuaDoc), roi gui ket qua
+     * ve bang lenh [Lenh.DOC_VO].
      */
     const val D_DAN_DO = "dando"
+
+    /**
+     * Cac dong dan do chua toi han, gom theo buoi hoc phai xong. Chi tablet ghi.
+     *
+     * Tu 30/9/2026 vo dan do dung de nhac bai: moi dong han toi tiet sau cua dung mon do,
+     * dong khong doc ra mon thi han la buoi hoc ke tiep. Document co [F_CAC_BUOI]: mang
+     * { ma, ngay, ten, vaoHoc, cac }, buoi som truoc. ma la khoa buoi "20261003-CHIEU",
+     * ngay dang yyyy-MM-dd, ten la "chiều thứ bảy 3/10", vaoHoc la epoch ms luc vao hoc.
+     * cac la mang { chu, bai, mon, ngayVo }: bai true la dong con tich la bai tap, mon la
+     * ten mon trong thoi khoa bieu (rong la khong doc ra), ngayVo la ngay ghi tren trang
+     * vo co dong do.
+     *
+     * Tablet ghi de ca ban moi khi danh sach doi, ke ca khi mot buoi vua bat dau va cac
+     * dong cua no roi ra. Khong con dong nao thi xoa document.
+     */
+    const val D_NHAC_BAI = "nhacbai"
 
     /**
      * Danh sach viec de chon khi giao: ten va so phut, o truong [F_VIEC].
@@ -271,27 +288,29 @@ object Duong {
     const val F_KHAI = "khai"
 
     /**
-     * Vo dan do con da soat tu dau buoi, ma lan nop nay dung thay cho trang vo.
+     * Vo dan do con da soat: noi dung cua hop/dando ([D_DAN_DO]), va truong trong bai nop
+     * truoc 30/9/2026 (luc do Claude dung vo de tinh tron goi; bai nop sau ngay do khong mang
+     * truong nay nua).
      *
-     * Map { ngay, cacBai, dongKhac, fileId, chuaDoc, nguon, chupLuc }. Tablet chep luc con
-     * nop, khi lan nop do khong chup trang vo. ngay la ngay ghi tren vo, dang yyyy-MM-dd.
-     * cacBai la cac dong con tich la bai tap, rong la hom do co khong giao bai tap nao.
-     * fileId la anh trang vo tren Telegram, vang la chua gui duoc; co thi anh do cung nam
-     * trong [F_ANH] voi khau DAN_DO, de Bang dieu khien ban cu van gui trang vo cho Claude
-     * doc.
+     * Map { ngay, cacBai, dongKhac, fileId, chuaDoc, nguon, chupLuc }. ngay la ngay ghi tren
+     * vo, dang yyyy-MM-dd. cacBai la cac dong con tich la bai tap, rong la hom do co khong
+     * giao bai tap nao. fileId la anh trang vo tren Telegram, vang la chua gui duoc.
      *
      * chuaDoc true la chi co anh, chua ai doc ra chu: cacBai rong nhung chua biet co giao
      * gi, va ngay tam la ngay chup. nguon la ai doc ra danh sach: CON (con soat ban may
      * doc), CLAUDE (Claude doc qua lenh [Lenh.DOC_VO]), LUCCHAM (doc o lan cham bai dau
-     * tien). chupLuc la luc chup tam anh, giu nguyen khi doc lai hay sua chu.
-     *
-     * Co truong nay thi loi nho gui Claude chep san ngay va danh sach bai, va Claude chi
-     * con noi con lam het chua, cau nao thuoc bai co giao.
+     * tien, chi con o ban cu). chupLuc la luc chup tam anh, giu nguyen khi doc lai hay sua
+     * chu.
      */
     const val F_DAN_DO = "danDo"
 
     // --- truong trong nhatky/{ngay} ---
     const val F_DONG = "dong"
+
+    // --- truong trong hop/nhacbai ---
+
+    /** Cac buoi co dong dan do chua toi han. Xem [D_NHAC_BAI]. */
+    const val F_CAC_BUOI = "cacBuoi"
 
     // --- truong trong hop/sudung ---
 
@@ -444,17 +463,14 @@ object Lenh {
      * Cham bai theo ket qua Claude. Tu 28/9/2026 day la duong cham duy nhat: tablet khong
      * tu cham nua. Dung cho bai chua cham, hay da cham ma van cho duyet.
      *
-     * Kem [Duong.F_BAI_ID]. "giaTri" la { cac, ngayDanDo, baiDuocGiao, lamHetDanDo,
-     * coAnhDanDo }, voi cac = [{ ma, dung, chac, conViet, goiY, soDong, de, dang,
-     * trongDanDo, loaiLoi }]. loaiLoi (tu 28/9/2026) la kieu sai cua cau sai, mot trong bay
-     * nhan cua LoaiLoi ben tablet; thieu hay la thi tablet tu xu. Tablet tinh phut theo luat,
-     * ke ca tron goi vo dan do, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho
-     * duyet.
+     * Kem [Duong.F_BAI_ID]. "giaTri" la { cac }, voi cac = [{ ma, dung, chac, conViet,
+     * goiY, soDong, de, dang, loaiLoi }]. loaiLoi (tu 28/9/2026) la kieu sai cua cau sai,
+     * mot trong bay nhan cua LoaiLoi ben tablet; thieu hay la thi tablet tu xu. Tablet tinh
+     * phut theo luat, cap gio, ghi so, bao Telegram. Chi lam voi bai dang cho duyet.
      *
-     * Bai co [Duong.F_DAN_DO] thi coAnhDanDo la true, va tablet lay ngay cung danh sach
-     * bai tu ban no giu luc con nop. Tu Claude chi lay lamHetDanDo va trongDanDo. Ban do
-     * chi co anh (chuaDoc) thi khong co danh sach: tablet lay ca ngay lan bai tu Claude,
-     * roi giu lai lam vo dan do cua ngay cho cac bai sau.
+     * Truoc 30/9/2026 "giaTri" con mang ngayDanDo, baiDuocGiao, lamHetDanDo, coAnhDanDo va
+     * trongDanDo cua tung cau, de tinh tron goi vo dan do. Bo tron goi thi tablet bo qua
+     * cac truong do, Bang dieu khien ban cu con gui cung khong sao.
      *
      * Khac [SUA_CHAM]: lenh kia sua mot ban cham da co, lenh nay la ban cham dau tien.
      */
