@@ -142,6 +142,12 @@ object Duong {
     const val F_SO_BAI_CHO = "soBaiCho"
 
     /**
+     * So phut trong "Quỹ giờ chơi" cua tablet (tu 29/9/2026): phut lam tren may ma tran rieng
+     * cua phan do cat. Bang dieu khien hien so nay va cap tu quy bang lenh [Lenh.CAP_QUY].
+     */
+    const val F_QUY_GIO = "quyGio"
+
+    /**
      * Ten cac viec nha CHUA xong, dang danh sach chuoi.
      *
      * Co truong nay thi ben dien thoai moi giai thich duoc man hinh dang khoa: thieu
@@ -472,6 +478,25 @@ object Lenh {
      * tu doc lai va soat xong, thi tablet bo ket qua nay. Chi Ba Huy go duoc.
      */
     const val DOC_VO = "DOCVO"
+
+    /**
+     * Cap gio tu "Quỹ giờ chơi" (29/9/2026). Kem [Duong.F_PHUT]; thieu hay 0 la cap het quy.
+     * Khong tinh vao tran ngay, giong [CHO]: Ba Huy chu dong cho. Quy khong du thi tablet
+     * cap phan con. Chi Ba Huy go duoc.
+     */
+    const val CAP_QUY = "CAPQUY"
+
+    /**
+     * Ba Huy tu xu nhung cau Claude doc chua chac hay khong ghi so dong (29/9/2026).
+     *
+     * Kem [Duong.F_BAI_ID]. "giaTri" giong het [CHAM_BAI]: Bang dieu khien gui lai nguyen
+     * ban cham cua Claude, chi doi nhung cau Ba Huy vua xu. Cau Ba Huy bam Dung thi chac la
+     * true, dung la true, soDong theo so Ba Huy chon; bam Sai thi chac la true, dung la
+     * false; bam Chup lai thi them chupLai la true. Tablet cham lai ca bai theo dung duong
+     * cua CHAM_BAI, nen chi co mot luat tinh phut va mot cho ghi so. Cau chup lai khong
+     * tinh dung hay sai, con duoc nhan chup lai cau do. Chi Ba Huy go.
+     */
+    const val XU_CAU = "XUCAU"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
