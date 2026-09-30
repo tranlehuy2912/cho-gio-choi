@@ -208,6 +208,17 @@ object Duong {
     /** Cau tablet noi lai sau khi lam mot lenh: { chu, luc, ai }. */
     const val F_TRA_LOI = "traLoi"
 
+    /**
+     * Cac de thi in san trong tablet (30/9/2026), cho hang "Đề thi thử" cua Bang dieu khien.
+     *
+     * Mang { ma, ten, den, tt, sao, toiDa } theo thu tu trong bo de. ma la ma de ("GK1-1"),
+     * gui lai trong [Lenh.MO_DE_THI]. den la Unit cuoi de cham toi: tablet tu mo de khi lop
+     * hoc toi Unit do. tt la mot trong KHOA (chua toi pham vi), SAN (mo duoc), MO (dang mo,
+     * chua bat dau), DANG (dang lam), XONG (da nop). sao va toiDa la diem lan nop gan nhat,
+     * -1 khi chua nop lan nao. Vang truong nay la tablet ban cu, chua co de thi.
+     */
+    const val F_DE_THI = "deThi"
+
     // --- truong trong lenh/{id} ---
     const val F_KIEU = "kieu"
     const val F_PHUT = "phut"
@@ -524,6 +535,14 @@ object Lenh {
      * chi tra gio mot lan. Chi Ba Huy go.
      */
     const val BO_SUA = "BOSUA"
+
+    /**
+     * Mo mot de thi in san cho Le Hoa lam (30/9/2026). Kem ma de ("GK1-1") o [Duong.F_CHU],
+     * lay tu [Duong.F_DE_THI]. Tablet mo ca de chua toi pham vi Unit, vi Ba Huy chu dong
+     * bam. De dang mo thi tablet giu nguyen, chi tra loi la dang mo. De vua nop trong ngay
+     * thi tu hom sau moi lam lai duoc. Chi Ba Huy go.
+     */
+    const val MO_DE_THI = "MODETHI"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
