@@ -515,6 +515,18 @@ object Lenh {
      * tinh dung hay sai, con duoc nhan chup lai cau do. Chi Ba Huy go.
      */
     const val XU_CAU = "XUCAU"
+
+    /**
+     * Ba Huy bo cau sai khoi danh sach "câu cần sửa" cua tablet, khong cong phut nao
+     * (30/9/2026). Dung cho cau ngoai sach con khong sua duoc nua, hay cau Ba Huy thay khong
+     * dang bat con chup lai.
+     *
+     * Kem [Duong.F_BAI_ID]. "giaTri" la danh sach [{ ma, de }], ma va de lay tu ban cham cua
+     * bai, ghep voi cau dang cho sua theo dung cach cua [SUA_CHAM]. Tablet nho luc bo: cau do
+     * con sai lan nua o lan nop sau thi lai hien. So cai van giu nguyen dong sai, nen cau van
+     * chi tra gio mot lan. Chi Ba Huy go.
+     */
+    const val BO_SUA = "BOSUA"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
