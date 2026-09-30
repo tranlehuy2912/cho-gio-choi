@@ -55,12 +55,11 @@ object Duong {
     const val D_VIEC_NHA = "viecnha"
 
     /**
-     * Vo dan do cua buoi vua hoc, ban dang con hieu luc tren tablet. Chi tablet ghi.
-     *
-     * Cung dang voi [F_DAN_DO], them [F_LUC] la luc luu. Ban vo song toi luc vao buoi
-     * hoc ke tiep; khong con ban nao thi tablet xoa document nay. Bang dieu khien doc no
-     * de hien the "Nhờ Claude đọc vở" khi ban do chi co anh (chuaDoc), roi gui ket qua
-     * ve bang lenh [Lenh.DOC_VO].
+     * KHONG CON DUNG tu 30/9/2026. Tung giu vo dan do cua buoi vua hoc (cung dang voi
+     * [F_DAN_DO], them [F_LUC]), de Bang dieu khien hien the "Nhờ Claude đọc vở" khi may doc
+     * khong duoc, roi gui ket qua ve bang lenh [Lenh.DOC_VO]. Gio may doc khong duoc thi con
+     * tu go tren tablet, trang da soat nam o [D_NHAC_BAI], va tablet chi xoa document nay.
+     * Giu ten de tablet biet xoa, va de khong ai dung lai ten nay cho viec khac.
      */
     const val D_DAN_DO = "dando"
 
@@ -297,7 +296,7 @@ object Duong {
      * giao bai tap nao. fileId la anh trang vo tren Telegram, vang la chua gui duoc.
      *
      * chuaDoc true la chi co anh, chua ai doc ra chu: cacBai rong nhung chua biet co giao
-     * gi, va ngay tam la ngay chup. nguon la ai doc ra danh sach: CON (con soat ban may
+     * gi, va ngay tam la ngay chup (khong con tu 30/9/2026, xem [D_DAN_DO]). nguon la ai doc ra danh sach: CON (con soat ban may
      * doc), CLAUDE (Claude doc qua lenh [Lenh.DOC_VO]), LUCCHAM (doc o lan cham bai dau
      * tien, chi con o ban cu). chupLuc la luc chup tam anh, giu nguyen khi doc lai hay sua
      * chu.
@@ -489,11 +488,9 @@ object Lenh {
     const val TIN_CO = "TINCO"
 
     /**
-     * Ket qua Claude doc vo dan do, cho ban chi co anh (may doc khong duoc).
-     *
-     * "giaTri" la { chupLuc, ngay, cacDong: [{ chu, bai }] }. chupLuc lay tu
-     * [Duong.D_DAN_DO], de tablet chi ghi vao dung tam anh do: con chup tam khac, hay da
-     * tu doc lai va soat xong, thi tablet bo ket qua nay. Chi Ba Huy go duoc.
+     * KHONG CON DUNG tu 30/9/2026: may doc khong duoc thi con tu go tren tablet. Tung la ket
+     * qua Claude doc vo dan do cho ban chi co anh, "giaTri" la { chupLuc, ngay, cacDong:
+     * [{ chu, bai }] }. Bang dieu khien ban cu con gui thi tablet tra loi la khong nhan nua.
      */
     const val DOC_VO = "DOCVO"
 
