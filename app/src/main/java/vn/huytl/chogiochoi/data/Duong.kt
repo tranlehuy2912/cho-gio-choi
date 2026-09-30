@@ -267,6 +267,13 @@ object Duong {
      * nop-bai.
      */
     const val F_CONG_LUC = "congLuc"
+
+    /**
+     * Ly do Ba Huy khong duyet bai, di kem trang thai TUCHOI (30/9/2026). Tablet ghi luc
+     * nhan [Lenh.TU_CHOI] (chep tu [F_CHU]) hay lenh /tuchoi ben Telegram. Khong co ly do
+     * thi khong co truong nay. Man Bai da cham tren tablet hien no cho Le Hoa.
+     */
+    const val F_LY_DO = "lyDo"
     const val F_ANH = "anh"
     const val F_CHAM = "cham"
     const val F_MESSAGE_ID = "messageId"
@@ -380,7 +387,7 @@ object Lenh {
     /** Duyet mot bai dang cho. Kem [Duong.F_BAI_ID] va so phut. */
     const val DUYET = "DUYET"
 
-    /** Khong duyet. Kem ly do o [Duong.F_CHU] neu co. */
+    /** Khong duyet. Kem ly do o [Duong.F_CHU] neu co, tablet chep vao [Duong.F_LY_DO] cua bai. */
     const val TU_CHOI = "TUCHOI"
 
     /**
