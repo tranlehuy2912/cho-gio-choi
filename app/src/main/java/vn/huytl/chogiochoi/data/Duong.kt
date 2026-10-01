@@ -232,8 +232,27 @@ object Duong {
      * hoc toi Unit do. tt la mot trong KHOA (chua toi pham vi), SAN (mo duoc), MO (dang mo,
      * chua bat dau), DANG (dang lam), XONG (da nop). sao va toiDa la diem lan nop gan nhat,
      * -1 khi chua nop lan nao. Vang truong nay la tablet ban cu, chua co de thi.
+     *
+     * Tu 1/10/2026 chi con de Tieng Anh: de Toan, KHTN mo theo bai chu khong theo Unit, nen
+     * nam o [F_CAC_DE_THI]. Bang dieu khien ban cu chi doc truong nay, va neu de Toan nam o
+     * day thi no xep de do vao hang Tieng Anh, kem mot so Unit vo nghia.
      */
     const val F_DE_THI = "deThi"
+
+    /**
+     * Cac de thi in san cua moi mon (1/10/2026), cho cac hang "Đề thi thử <môn>" cua Bang
+     * dieu khien. Doc truong nay truoc; vang thi tablet la ban cu, doc [F_DE_THI].
+     *
+     * Mang { ma, mon, ten, phamVi, tt, thieu, sao, toiDa, nopLuc, phut, doRong } theo thu tu cac
+     * bo de trong tablet. ma, tt, sao, toiDa nhu [F_DE_THI]. mon la ten mon day du ("Toán",
+     * "Khoa học tự nhiên", "Tiếng Anh"). phamVi la chu ta pham vi cua de ("Đại số tới Bài 9,
+     * Hình học tới Bài 14", "tới Unit 3"). thieu la chu noi phan nao lop chua hoc toi ("Hình
+     * học mới tới Bài 12, đề cần Bài 14"), rong khi tt khac KHOA. nopLuc la luc nop lan
+     * gan nhat (ms), 0 khi chua nop lan nao. phut la gio lam bai cua de. doRong la do rong pham
+     * vi (so Unit cua de Anh, tong so bai cac phan cua de Toan, KHTN), de dien thoai chon de hep
+     * nhat ma khong phai doc chu phamVi.
+     */
+    const val F_CAC_DE_THI = "cacDeThi"
 
     // --- truong trong lenh/{id} ---
     const val F_KIEU = "kieu"
@@ -567,10 +586,11 @@ object Lenh {
     const val BO_SUA = "BOSUA"
 
     /**
-     * Mo mot de thi in san cho Le Hoa lam (30/9/2026). Kem ma de ("GK1-1") o [Duong.F_CHU],
-     * lay tu [Duong.F_DE_THI]. Tablet mo ca de chua toi pham vi Unit, vi Ba Huy chu dong
-     * bam. De dang mo thi tablet giu nguyen, chi tra loi la dang mo. De vua nop trong ngay
-     * thi tu hom sau moi lam lai duoc. Chi Ba Huy go.
+     * Mo mot de thi in san cho Le Hoa lam (30/9/2026). Kem ma de ("GK1-1", "TGK1-2") o
+     * [Duong.F_CHU], lay tu [Duong.F_CAC_DE_THI] (tablet ban cu: [Duong.F_DE_THI]). Tablet mo
+     * ca de lop chua hoc toi pham vi, vi Ba Huy chu dong bam. De dang mo thi tablet giu
+     * nguyen, chi tra loi la dang mo. De vua nop trong ngay thi tu hom sau moi lam lai duoc.
+     * Chi Ba Huy go.
      */
     const val MO_DE_THI = "MODETHI"
 }
