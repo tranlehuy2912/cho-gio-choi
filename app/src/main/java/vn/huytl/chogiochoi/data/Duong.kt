@@ -155,6 +155,22 @@ object Duong {
     const val F_TONG_PHIEN_MS = "tongPhienMs"
     const val F_PHUT_DA_DUYET = "phutDaDuyet"
     const val F_PHUT_CON_LAI = "phutConLai"
+
+    /**
+     * So ms con da choi that hom nay, tinh toi luc doan dang chay bat dau (1/10/2026).
+     *
+     * Doan dang chay thi ben dien thoai tu cong them tu [F_DOAN_CHOI_TU], giong cach no tu
+     * tru [F_KET_THUC_LUC]: so nay va moc kia chi doi khi phien doi trang thai, nen khong
+     * them luot ghi nao. Cong voi phan dang giu ([F_KET_THUC_LUC] luc dang choi, [F_CON_LAI_MS]
+     * luc khac) la so "được chơi" cua thanh ngay ben tablet, gom ca gio nguoi lon cho.
+     *
+     * Khong co truong nay la tablet ban cu: ben dien thoai hien kieu "Đã duyệt hôm nay" nhu
+     * truoc.
+     */
+    const val F_DA_CHOI_MS = "daChoiMs"
+
+    /** Luc doan phien dang chay bat dau, theo gio tablet. 0 la khong co doan nao chay. */
+    const val F_DOAN_CHOI_TU = "doanChoiTu"
     const val F_SO_BAI_CHO = "soBaiCho"
 
     /**
