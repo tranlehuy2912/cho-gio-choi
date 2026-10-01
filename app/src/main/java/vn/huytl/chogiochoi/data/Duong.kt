@@ -297,11 +297,18 @@ object Duong {
     const val F_KHAU = "khau"
 
     /**
-     * Ket qua Claude cham lai, Ba Huy dan tu app Claude vao Bang dieu khien.
+     * Ket qua Claude cham, Ba Huy dan tu app Claude vao Bang dieu khien. Chi Bang dieu khien
+     * ghi truong nay.
      *
-     * Mot map { luc, cac: [{ ma, dung, chac, conViet, goiY }] }. Nam canh [F_CHAM]
-     * chu khong ghi de len no: ban cham cua may van giu nguyen de doi chieu, con man
-     * ket qua tren tablet thi hien ket luan cua Claude khi co.
+     * Mot map { luc, chinh, cac }, voi cac = [{ ma, dung, chac, conViet, goiY, de }]; them goi
+     * khi ghi cung mot lenh, them xuLuc sau lenh [Lenh.XU_CAU]. Tu 28/9/2026 tablet khong tu
+     * cham nua, nen thuong day la ban cham dau tien (chinh la true), ghi cung luc voi lenh
+     * [Lenh.CHAM_BAI]; goi la nguyen giaTri gui kem lenh do, de the "Câu cần Ba Huy xem" gui
+     * lai qua [Lenh.XU_CAU]. Lenh XU_CAU ghi de goi va cac. Dan lai ket qua Claude la ghi de ca
+     * truong.
+     *
+     * Nam canh [F_CHAM] chu khong ghi de len no: [F_CHAM] la ban tablet ghi sau khi tinh phut.
+     * Man Bai da cham tren tablet hien ket luan cua Claude khi co.
      */
     const val F_CHAM_CLAUDE = "chamClaude"
 
