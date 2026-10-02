@@ -334,7 +334,7 @@ object Duong {
     /**
      * Cac cau con khai truoc khi chup, kem de tung cau.
      *
-     * Map { tenNguon, bai, mon, onTap, suaBai, cac: [{ ma, cauId, de, dang }] }. Tablet
+     * Map { tenNguon, bai, mon, suaBai, cac: [{ ma, cauId, de, dang }] }. Tablet
      * ghi luc con nop. Co no thi loi nho gui Claude co de bai cua tung cau, va ket qua
      * Claude cham ve khop duoc voi dung cau trong sach.
      *
@@ -343,6 +343,9 @@ object Duong {
      * tu ban cham cu. Loi nho dan Claude chi cham cau trong cac, va tablet bo cau ngoai
      * danh sach: con sua de len trang vo cu, cau da dung tu lan truoc khong duoc tra gio
      * lan hai.
+     *
+     * onTap (lan nop la on lai bai chup anh) bo ngay 2/10/2026: tablet thoi ghi, Bang
+     * dieu khien thoi doc. Bai nop truoc ngay do van con truong nay, khong ai doc nua.
      */
     const val F_KHAI = "khai"
 
