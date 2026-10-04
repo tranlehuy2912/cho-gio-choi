@@ -30,6 +30,18 @@ object Duong {
 
     const val NHA = "nha"
 
+    /**
+     * Lich hoc cua mot nha (thoi khoa bieu va ngay nghi), tu 4/10/2026. Collection rieng,
+     * document mang dung ma nha, mot truong [F_JSON] la chuoi JSON, khuon xem BanLich ben
+     * tablet va Bang dieu khien.
+     *
+     * Nam ngoai nha/{maNha} vi luat Firestore cho nguoi nha ghi moi thu trong do. O day luat
+     * cho nguoi nha DOC, khong may nao ghi: Claude Code ghi qua Firebase console (khong qua
+     * luat), tablet cua Le Hoa khong sua duoc lich de khoi bi chan.
+     */
+    const val LICH_HOC = "lichhoc"
+    const val F_JSON = "json"
+
     // --- cac document trong mot nha ---
     const val HOP = "hop"
     const val D_TRANG_THAI = "trangthai"
@@ -195,6 +207,12 @@ object Duong {
     const val F_PIN_MAY = "pinMay"
     const val F_DANG_SAC = "dangSac"
     const val F_BAN_APP = "banApp"
+
+    /**
+     * Phien ban lich tablet dang dung (so phienBan trong [LICH_HOC]). Ghi lich moi len
+     * Firestore xong thi xem so nay de biet tablet da nhan chua.
+     */
+    const val F_LICH = "lich"
     const val F_CAP_NHAT_LUC = "capNhatLuc"
 
     /**
