@@ -42,6 +42,39 @@ object Duong {
     const val LICH_HOC = "lichhoc"
     const val F_JSON = "json"
 
+    /**
+     * Laptop xem Netflix cua Le Hoa (7/10/2026). Collection rieng, document mang dung ma nha.
+     *
+     * Laptop chay Linux Mint, Timekpr-nExt dem gio cua tai khoan Le Hoa. Mot chuong trinh
+     * chay ngam tren laptop hoi [CAP] chung mot phut mot lan, cong gio cho tung phieu roi
+     * xoa phieu, va ghi lai vao document nay luc nao het gio.
+     *
+     * Nam ngoai nha/{maNha} vi laptop khong phai nguoi nha: cho no vao [F_UIDS] la cho no
+     * ghi moi thu trong nha. Laptop chi doc ghi duoc o day, nhan ra bang [F_UID_LAPTOP].
+     * Document nay do Claude Code lap qua Firebase console (ghi [F_UID_LAPTOP]), khong app
+     * nao lap duoc.
+     *
+     * Cac truong laptop ghi: [F_KET_THUC_LUC] luc het gio khi con dang dung laptop (0 khi
+     * khong ai dung, dien thoai tu dem lui nhu the Gio choi), [F_CON_LAI_MS] so ms con lai
+     * khi khong ai dung, [F_DANG_DUNG], [F_CAP_CUOI] { phut, ai, luc } phieu vua cong,
+     * [F_CAP_NHAT_LUC] luc ghi. Chi ghi khi co gi doi, khong ghi moi phut.
+     */
+    const val LAPTOP = "laptop"
+
+    /**
+     * Phieu cap gio xem Netflix: laptop/{maNha}/cap/{id}. Su kien nhu [LENH]: laptop cong
+     * xong thi xoa.
+     *
+     * Truong: [F_PHUT] so phut Netflix, [F_PHUT_CHOI] so phut choi tablet da doi ra (0 khi Ba
+     * Huy cho them), [F_AI] ([Nguoi.LE_HOA] hay [Nguoi.BA_HUY]), [F_TAO_LUC]. Phieu tao tu hom
+     * truoc thi laptop bo: phut Netflix chi dung trong ngay, nhu phieu gio choi tablet.
+     */
+    const val CAP = "cap"
+    const val F_UID_LAPTOP = "uidLaptop"
+    const val F_PHUT_CHOI = "phutChoi"
+    const val F_DANG_DUNG = "dangDung"
+    const val F_CAP_CUOI = "capCuoi"
+
     // --- cac document trong mot nha ---
     const val HOP = "hop"
     const val D_TRANG_THAI = "trangthai"
@@ -437,6 +470,9 @@ object Duong {
 object Nguoi {
     const val BA_HUY = "bahuy"
     const val BA_NOI = "banoi"
+
+    /** Le Hoa tu doi phut choi tren tablet, chi dung trong phieu [Duong.CAP] cua laptop. */
+    const val LE_HOA = "lehoa"
 }
 
 /**
