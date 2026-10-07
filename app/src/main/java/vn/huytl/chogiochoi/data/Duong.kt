@@ -57,7 +57,7 @@ object Duong {
      * Cac truong laptop ghi: [F_KET_THUC_LUC] luc het gio khi con dang dung laptop (0 khi
      * khong ai dung, dien thoai tu dem lui nhu the Gio choi), [F_CON_LAI_MS] so ms con lai
      * khi khong ai dung, [F_DANG_DUNG], [F_CAP_CUOI] { phut, ai, luc } phieu vua cong,
-     * [F_CAP_NHAT_LUC] luc ghi. Chi ghi khi co gi doi, khong ghi moi phut.
+     * [F_CAP_NHAT_LUC] luc ghi, [F_WEB_DANG_MO]. Chi ghi khi co gi doi, khong ghi moi phut.
      */
     const val LAPTOP = "laptop"
 
@@ -74,6 +74,16 @@ object Duong {
     const val F_PHUT_CHOI = "phutChoi"
     const val F_DANG_DUNG = "dangDung"
     const val F_CAP_CUOI = "capCuoi"
+
+    /**
+     * Ba Huy muon mo web tren laptop (7/10/2026): Bang dieu khien ghi, true la go luat chan web
+     * cua Firefox, false la dat lai. Khong co han, anh Huy chon. Day la truong duy nhat cua
+     * [LAPTOP] ma nguoi nha ghi duoc. Le Hoa dang nhap laptop thi laptop van khoa web.
+     */
+    const val F_MO_WEB = "moWeb"
+
+    /** Laptop bao web dang mo that hay khong (luat Firefox dang go). Chi laptop ghi. */
+    const val F_WEB_DANG_MO = "webDangMo"
 
     // --- cac document trong mot nha ---
     const val HOP = "hop"
