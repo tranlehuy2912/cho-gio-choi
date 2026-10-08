@@ -16,11 +16,15 @@ package vn.huytl.chogiochoi.data
 object Duong {
 
     /**
-     * Lenh hay ban trang thai go tu lau hon chung nay thi tablet khong chay nua.
+     * Dot viec nha (hop/viecnha) giao tu lau hon chung nay ma tablet chua tung thay thi
+     * tablet khong bat dau nua.
      *
      * Nua tieng: du dai de om nhung luc tablet mat mang, du ngan de khong co chuyen
-     * lenh cua toi hom truoc chay vao sang hom sau - "cho 60 phut" bam toi qua tu
-     * dung mo gio choi luc sang som ma khong ai bam gi.
+     * viec giao toi hom truoc chay vao sang hom sau.
+     *
+     * Lenh trong lenh/ thi tu 8/10/2026 khong con bo theo moc nay (anh Huy chot: lenh nao
+     * cung chay, tre bao lau cung chay; tablet lam dung thu tu bam, bot gio duoc moi luc).
+     * Truoc do lenh cu hon nua tieng bi bo, tru TINCO.
      *
      * De o day chu khong de rieng mot ben, vi Bang dieu khien cung phai biet: no chi
      * chia ra thay giup khi mot dot viec nha da qua moc nay, tuc la tablet chac chan
@@ -609,8 +613,9 @@ object Lenh {
      * Ba Huy chep tin trong nhom lop Zalo roi dan vao Bang dieu khien. Noi dung o
      * [Duong.F_CHU]. Tin vao kho tin cua co, noi ba noi cam tablet len cung doc duoc.
      *
-     * Khong bi bo vi qua [Duong.QUA_CU_MS] nhu cac lenh khac: tin gui toi qua ma sang
-     * nay tablet moi mo may thi van phai hien, va hien dung gio Ba Huy gui.
+     * Tin gui toi qua ma sang nay tablet moi mo may thi van phai hien, va hien dung gio Ba
+     * Huy gui. Truoc 8/10/2026 day la lenh duy nhat khong bi bo khi qua [Duong.QUA_CU_MS];
+     * tu ngay do khong lenh nao bi bo nua.
      */
     const val TIN_CO = "TINCO"
 
