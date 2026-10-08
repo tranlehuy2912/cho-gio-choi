@@ -37,8 +37,9 @@ object ViecNha {
      * Mot dot viec dang giao, doc tu hop/viecnha.
      *
      * @param ai nguoi giao dot nay, [Nguoi.BA_NOI] hay [Nguoi.BA_HUY]
-     * @param luc lan cuoi co nguoi bam, theo gio cua may bam. Tablet lay moc nay de
-     *   bo mot dot giao tu hon nua tieng truoc ma no chua tung thay.
+     * @param luc lan cuoi co nguoi bam, theo gio cua may bam. Truoc 8/10/2026 tablet lay moc
+     *   nay de bo mot dot giao tu hon nua tieng truoc ma no chua tung thay; tu ngay do tablet
+     *   nhan dot du tre bao lau, nut Gui lai chi con de huc tablet doc lai.
      */
     data class Dot(val maPhien: String, val luc: Long, val ai: String, val cac: List<DangLam>) {
 
@@ -53,7 +54,10 @@ object ViecNha {
         /** Danh sach rong la cach noi "bo het" voi tablet. Tablet thay thi xoa document. */
         fun boHet(bayGio: Long) = copy(luc = bayGio, cac = emptyList())
 
-        /** Chi doi moc luc, de tablet dang bo qua vi qua cu thi nhan lai. */
+        /**
+         * Chi doi moc luc: ghi lai document de tablet doc lai. Truoc 8/10/2026 day la cach de
+         * tablet nhan dot da qua nua tieng; tablet ban moi khong bo dot cu nua.
+         */
         fun guiLai(bayGio: Long) = copy(luc = bayGio)
     }
 

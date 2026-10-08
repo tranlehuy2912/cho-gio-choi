@@ -15,22 +15,10 @@ package vn.huytl.chogiochoi.data
  */
 object Duong {
 
-    /**
-     * Dot viec nha (hop/viecnha) giao tu lau hon chung nay ma tablet chua tung thay thi
-     * tablet khong bat dau nua.
-     *
-     * Nua tieng: du dai de om nhung luc tablet mat mang, du ngan de khong co chuyen
-     * viec giao toi hom truoc chay vao sang hom sau.
-     *
-     * Lenh trong lenh/ thi tu 8/10/2026 khong con bo theo moc nay (anh Huy chot: lenh nao
-     * cung chay, tre bao lau cung chay; tablet lam dung thu tu bam, bot gio duoc moi luc).
-     * Truoc do lenh cu hon nua tieng bi bo, tru TINCO.
-     *
-     * De o day chu khong de rieng mot ben, vi Bang dieu khien cung phai biet: no chi
-     * chia ra thay giup khi mot dot viec nha da qua moc nay, tuc la tablet chac chan
-     * se tu choi.
-     */
-    const val QUA_CU_MS = 30 * 60_000L
+    // QUA_CU_MS (30 phut) bo ngay 8/10/2026. Truoc do tablet bo lenh trong lenh/, lenh go
+    // qua Telegram va dot viec nha chua tung thay neu cu hon nua tieng (tru TINCO), de "cho
+    // 60 phut" bam toi qua khong tu mo gio choi luc sang som. Anh Huy chot: lenh nao cung
+    // chay, tre bao lau cung chay; tablet lam dung thu tu bam, bot gio duoc moi luc.
 
     const val NHA = "nha"
 
@@ -537,9 +525,10 @@ object Lenh {
     /**
      * Cong gio cho mot dot viec nha ma tablet da bo lo.
      *
-     * Ba bam xong het trong luc tablet dang tat, den luc no song lai thi ban da qua
-     * [Duong.QUA_CU_MS] nen no bo qua - va ba thi khong con nut nao de gui lai. Bang
-     * dieu khien nhin thay canh do va go lenh nay thay.
+     * Ba bam xong het trong luc tablet dang tat, den luc no song lai thi ban da qua nua
+     * tieng nen no bo qua - va ba thi khong con nut nao de gui lai. Bang dieu khien nhin
+     * thay canh do va go lenh nay thay. Tu 8/10/2026 tablet khong bo dot cu nua, nen canh
+     * do khong con xay ra.
      *
      * Tu khi Bang dieu khien cung ghi duoc hop/viecnha, no khong go lenh nay nua: no
      * bam Gui lai nhu may ba, tuc la ghi lai moc luc cua dot do, va tablet cong theo
@@ -614,8 +603,8 @@ object Lenh {
      * [Duong.F_CHU]. Tin vao kho tin cua co, noi ba noi cam tablet len cung doc duoc.
      *
      * Tin gui toi qua ma sang nay tablet moi mo may thi van phai hien, va hien dung gio Ba
-     * Huy gui. Truoc 8/10/2026 day la lenh duy nhat khong bi bo khi qua [Duong.QUA_CU_MS];
-     * tu ngay do khong lenh nao bi bo nua.
+     * Huy gui. Truoc 8/10/2026 day la lenh duy nhat khong bi bo khi cu hon nua tieng; tu
+     * ngay do khong lenh nao bi bo nua.
      */
     const val TIN_CO = "TINCO"
 
