@@ -77,6 +77,45 @@ object Duong {
     /** Laptop bao web dang mo that hay khong (luat Firefox dang go). Chi laptop ghi. */
     const val F_WEB_DANG_MO = "webDangMo"
 
+    /**
+     * Lenh Ba Huy gui laptop tu the Laptop (8/10/2026): laptop/{maNha}/lenh/{id} { [F_KIEU]
+     * ([LenhLaptop]), [F_CHU] cau nhan, [F_SO_LAN] so lan doc, [F_AI], [F_TAO_LUC] }. Su kien nhu
+     * [LENH] cua tablet: laptop hoi chung vong mot phut voi [CAP], xoa lenh roi moi lam, xong ghi
+     * ket qua vao [F_KET_QUA]. Lenh cho qua [LENH_LAPTOP_HET_HAN_MS] ma laptop chua lam thi bo,
+     * ca hai ben cung bo (anh Huy chot 8/10/2026): khong thi bam "Tắt máy" luc laptop dang tat
+     * se lam laptop tu tat ngay lan bat sau.
+     */
+    const val F_SO_LAN = "soLan"
+    const val LENH_LAPTOP_HET_HAN_MS = 5 * 60_000L
+
+    /** Cau nhan len tivi dai toi da chung nay ky tu (anh Huy chot 8/10/2026), luat Firestore chan. */
+    const val NHAN_TOI_DA = 200
+
+    /**
+     * Cac truong laptop ghi them tu 8/10/2026. [F_PHIEN] ten tai khoan dang ngoi man hinh ("lehoa",
+     * "huy", rong la dang o man dang nhap), [F_PHIEN_TU] luc tai khoan do dang nhap. [F_BAT_LUC]
+     * luc may bat lan nay, [F_TAT_LUC] luc may tat (0 khi dang chay): tatLuc tu batLuc tro di la
+     * laptop da tat dung cach. [F_SU_KIEN] cac lan bat, tat, dang nhap trong ngay: [{ [F_KIEU]
+     * ([SuKienLaptop]), [F_LUC], [F_AI] ten tai khoan }]. [F_KET_QUA] ket qua nam lenh gan nhat:
+     * [{ [F_ID] ma lenh, [F_KIEU], [F_OK], [F_CHU] cau bao, [F_LUC] }].
+     */
+    const val F_PHIEN = "phien"
+    const val F_PHIEN_TU = "phienTu"
+    const val F_BAT_LUC = "batLuc"
+    const val F_TAT_LUC = "tatLuc"
+    const val F_SU_KIEN = "suKien"
+    const val F_KET_QUA = "ketQua"
+    const val F_ID = "id"
+    const val F_OK = "ok"
+
+    /**
+     * Anh chup man hinh laptop moi nhat: laptop/{maNha}/anh/moinhat { [F_JPG] anh JPEG, [F_LUC],
+     * [F_PHIEN] }. Chi laptop ghi, anh sau de anh truoc (anh Huy chot 8/10/2026).
+     */
+    const val ANH = "anh"
+    const val D_MOI_NHAT = "moinhat"
+    const val F_JPG = "jpg"
+
     // --- cac document trong mot nha ---
     const val HOP = "hop"
     const val D_TRANG_THAI = "trangthai"
@@ -657,6 +696,40 @@ object Lenh {
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
+/**
+ * Cac kieu lenh Bang dieu khien gui laptop (8/10/2026), xem [Duong.F_SO_LAN]. Laptop doc cung
+ * nhung chuoi nay trong netflix_gio.py (LENH_NHAN ...): doi mot ben phai doi ca ben kia.
+ */
+object LenhLaptop {
+    /** Hien dai chu tren tivi va doc [Duong.F_CHU] [Duong.F_SO_LAN] lan bang giong Google Dich. */
+    const val NHAN = "NHAN"
+
+    /** Chup man hinh, laptop ghi vao [Duong.ANH]/[Duong.D_MOI_NHAT]. */
+    const val CHUP = "CHUP"
+
+    /** Dang xuat tai khoan dang ngoi man hinh. */
+    const val DANG_XUAT = "DANGXUAT"
+
+    const val TAT_MAY = "TATMAY"
+
+    /**
+     * Hoi laptop con song khong: laptop ghi lai trang thai, kem [Duong.F_CAP_NHAT_LUC]. Laptop chi
+     * ghi khi co gi doi, nen khong co lenh nay thi dien thoai khong biet laptop tat dot ngot.
+     */
+    const val HOI = "HOI"
+}
+
+/** Cac dong trong [Duong.F_SU_KIEN] cua laptop. */
+object SuKienLaptop {
+    const val BAT = "bat"
+    const val TAT = "tat"
+
+    /** May tat dot ngot (mat dien, giu nut nguon): luc la luc cuoi con thay may chay. */
+    const val MAT = "mat"
+    const val VAO = "vao"
+    const val RA = "ra"
+}
+
 object Cong {
     const val KHOA = "LOCKED"
     const val CHO_DUYET = "PENDING"
