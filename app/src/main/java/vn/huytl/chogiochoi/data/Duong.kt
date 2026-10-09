@@ -38,8 +38,9 @@ object Duong {
      * Laptop xem Netflix cua Le Hoa (7/10/2026). Collection rieng, document mang dung ma nha.
      *
      * Laptop chay Linux Mint, Timekpr-nExt dem gio cua tai khoan Le Hoa. Mot chuong trinh
-     * chay ngam tren laptop hoi [CAP] chung mot phut mot lan, cong gio cho tung phieu roi
-     * xoa phieu, va ghi lai vao document nay luc nao het gio.
+     * chay ngam tren laptop nghe [CAP] (tu 9/10/2026 giu mot ket noi nghe Firestore, phieu toi
+     * trong vai giay; truoc do hoi mot phut mot lan), cong gio cho tung phieu roi xoa phieu, va
+     * ghi lai vao document nay luc nao het gio.
      *
      * Nam ngoai nha/{maNha} vi laptop khong phai nguoi nha: cho no vao [F_UIDS] la cho no
      * ghi moi thu trong nha. Laptop chi doc ghi duoc o day, nhan ra bang [F_UID_LAPTOP].
@@ -84,8 +85,8 @@ object Duong {
     /**
      * Lenh Ba Huy gui laptop tu the Laptop (8/10/2026): laptop/{maNha}/lenh/{id} { [F_KIEU]
      * ([LenhLaptop]), [F_CHU] cau nhan, [F_SO_LAN] so lan doc, [F_AI], [F_TAO_LUC] }. Su kien nhu
-     * [LENH] cua tablet: laptop hoi chung vong mot phut voi [CAP], xoa lenh roi moi lam, xong ghi
-     * ket qua vao [F_KET_QUA]. Lenh cho qua [LENH_LAPTOP_HET_HAN_MS] ma laptop chua lam thi bo,
+     * [LENH] cua tablet: laptop nghe chung ket noi voi [CAP] (truoc 9/10/2026 hoi chung vong mot
+     * phut), xoa lenh roi moi lam, xong ghi ket qua vao [F_KET_QUA]. Lenh cho qua [LENH_LAPTOP_HET_HAN_MS] ma laptop chua lam thi bo,
      * ca hai ben cung bo (anh Huy chot 8/10/2026): khong thi bam "Tắt máy" luc laptop dang tat
      * se lam laptop tu tat ngay lan bat sau.
      */
