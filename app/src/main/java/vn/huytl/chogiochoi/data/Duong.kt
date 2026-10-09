@@ -121,6 +121,15 @@ object Duong {
     const val D_MOI_NHAT = "moinhat"
     const val F_JPG = "jpg"
 
+    /**
+     * So tung ngay cua laptop: laptop/{maNha}/ngay/{yyyy-MM-dd} { [F_SU_KIEN], [F_CAP_NHAT_LUC] }
+     * (9/10/2026), cho the "Thời gian dùng laptop" o tab Nhat ky. Chi laptop ghi, khi co gi doi;
+     * giu hom nay va 6 ngay truoc, cu hon thi laptop xoa. [F_SU_KIEN] cua document laptop chi giu
+     * hom nay nen can cho rieng nay. Qua nua dem ma con nguoi ngoi man hinh thi laptop ghi mot
+     * dong vao luc 0 gio cua ngay moi.
+     */
+    const val LAPTOP_NGAY = "ngay"
+
     // --- cac document trong mot nha ---
     const val HOP = "hop"
     const val D_TRANG_THAI = "trangthai"
