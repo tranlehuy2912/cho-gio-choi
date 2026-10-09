@@ -60,6 +60,10 @@ object Duong {
      * Truong: [F_PHUT] so phut Netflix, [F_PHUT_CHOI] so phut choi tablet da doi ra (0 khi Ba
      * Huy cho them), [F_AI] ([Nguoi.LE_HOA] hay [Nguoi.BA_HUY]), [F_TAO_LUC]. Phieu tao tu hom
      * truoc thi laptop bo: phut Netflix chi dung trong ngay, nhu phieu gio choi tablet.
+     *
+     * Tu 9/10/2026 [F_PHUT] am la phieu bot (Ba Huy bam "Bớt Netflix", anh Huy chot "cap them thi
+     * cung phai bot"): laptop bot chung ay phut, bot qua so dang con thi ve 0. Luat Firestore cho
+     * phut tu -600 toi 600, khac 0. Laptop ban truoc 9/10/2026 bo phieu am ma khong bot.
      */
     const val CAP = "cap"
     const val F_UID_LAPTOP = "uidLaptop"
