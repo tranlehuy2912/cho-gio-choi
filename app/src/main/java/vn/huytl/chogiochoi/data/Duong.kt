@@ -122,6 +122,18 @@ object Duong {
     const val F_JPG = "jpg"
 
     /**
+     * Remote tivi (11/10/2026, anh Huy chon mau B): laptop ghi [F_REMOTE] { [F_REMOTE_IP],
+     * [F_REMOTE_CONG], [F_REMOTE_KHOA] } vao document [LAPTOP]: dia chi laptop trong Wi-Fi nha, cong
+     * va ma khoa cua dich vu netflix-remote. Man Remote cua Bang dieu khien doc mot lan roi noi thang
+     * toi laptop qua Wi-Fi; lenh khong di qua Firestore (anh Huy chot, de khoi tre vai giay). Cach
+     * noi xem dau file tools/laptop/netflix-remote ben repo nop-bai.
+     */
+    const val F_REMOTE = "remote"
+    const val F_REMOTE_IP = "ip"
+    const val F_REMOTE_CONG = "cong"
+    const val F_REMOTE_KHOA = "khoa"
+
+    /**
      * So tung ngay cua laptop: laptop/{maNha}/ngay/{yyyy-MM-dd} { [F_SU_KIEN], [F_CAP_NHAT_LUC] }
      * (9/10/2026), cho the "Thời gian dùng laptop" o tab Nhat ky. Chi laptop ghi, khi co gi doi;
      * giu hom nay va 6 ngay truoc, cu hon thi laptop xoa. [F_SU_KIEN] cua document laptop chi giu
