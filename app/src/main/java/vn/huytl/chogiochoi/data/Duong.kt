@@ -74,13 +74,27 @@ object Duong {
 
     /**
      * Ba Huy muon mo web tren laptop (7/10/2026): Bang dieu khien ghi, true la go luat chan web
-     * cua Firefox, false la dat lai. Khong co han, anh Huy chon. Day la truong duy nhat cua
-     * [LAPTOP] ma nguoi nha ghi duoc. Le Hoa dang nhap laptop thi laptop van khoa web.
+     * cua Firefox, false la dat lai. Khong co han, anh Huy chon. Nguoi nha chi ghi duoc truong nay
+     * va [F_KHUNG_GIO] cua [LAPTOP]. Le Hoa dang nhap laptop thi laptop van khoa web.
      */
     const val F_MO_WEB = "moWeb"
 
     /** Laptop bao web dang mo that hay khong (luat Firefox dang go). Chi laptop ghi. */
     const val F_WEB_DANG_MO = "webDangMo"
+
+    /**
+     * Khung gio Le Hoa duoc dung laptop (19/10/2026, anh Huy chot): Bang dieu khien ghi
+     * [F_KHUNG_GIO] { [F_TU], [F_TOI] }, phut tinh tu 0 gio, chung cho ca bay ngay. [F_TU] bang
+     * [F_TOI] la dung ca ngay, [F_TU] lon hon [F_TOI] la khoa qua dem. Laptop dat khung nay vao
+     * Timekpr-nExt; Le Hoa dang xem ma khung moi cat ngang thi laptop bao "Còn 5 phút", 5 phut sau
+     * moi dang xuat. Chua co truong nay thi laptop giu khung dang dat (6:00 toi 21:30 tu
+     * 19/10/2026). Laptop chi doc, khong ghi.
+     */
+    const val F_KHUNG_GIO = "khungGio"
+    const val F_TOI = "toi"
+
+    /** Khung gio Timekpr-nExt tren laptop dang ap { [F_TU], [F_TOI] }. Chi laptop ghi. */
+    const val F_KHUNG_DANG_DAT = "khungDangDat"
 
     /**
      * Lenh Ba Huy gui laptop tu the Laptop (8/10/2026): laptop/{maNha}/lenh/{id} { [F_KIEU]
