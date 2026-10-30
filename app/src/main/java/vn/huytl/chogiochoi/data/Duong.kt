@@ -327,6 +327,13 @@ object Duong {
      * Firestore xong thi xem so nay de biet tablet da nhan chua.
      */
     const val F_LICH = "lich"
+
+    /**
+     * Cac ngay Ba Huy cho nghi hoc ngoai lich ([Lenh.NGHI_HOC]), tu hom nay tro di, dang danh
+     * sach so yyyyMMdd. Thieu truong nay la tablet ban cu chua hieu lenh do: tab Lich hoc ben
+     * Bang dieu khien an phan cho nghi.
+     */
+    const val F_NGAY_NGHI_THEM = "ngayNghiThem"
     const val F_CAP_NHAT_LUC = "capNhatLuc"
 
     /**
@@ -733,6 +740,15 @@ object Lenh {
      * Chi Ba Huy go.
      */
     const val MO_DE_THI = "MODETHI"
+
+    /**
+     * Cho Le Hoa nghi hoc mot ngay ngoai lich (30/10/2026, anh Huy chot): ngay do tablet
+     * khong chan gio di hoc, khong nhac soan tap, hom sau chan lai binh thuong. Kem ngay dang
+     * yyyyMMdd ("20261030") o [Duong.F_CHU]; "giaTri" la false thi bo ngay nghi do, thieu hay
+     * true la cho nghi. Tablet giu cac ngay chua qua va gui lai o [Duong.F_NGAY_NGHI_THEM].
+     * Chi Ba Huy go.
+     */
+    const val NGHI_HOC = "NGHIHOC"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
