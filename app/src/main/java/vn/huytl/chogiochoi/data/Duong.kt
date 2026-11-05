@@ -819,6 +819,54 @@ object TuXa {
     const val XEM = "xem"
 }
 
+/**
+ * Tiet kiem pin cua tablet (5/11/2026, anh Huy chot): man hinh tat du [PHUT] phut thi tablet bat
+ * che do Tiet kiem pin cua Android, du [PHUT_DUNG] phut thi tam dung cac app trong [APPS] qua Jokers
+ * Permissions; mo man hinh hay cam sac thi hoan lai. Tablet tu lam (pin/TietKiemPin.kt), anh Huy chinh
+ * tu nhom "Tiết kiệm pin" o the Cai dat cua Bang dieu khien, hoac tren tablet sau PIN.
+ *
+ * Bon ten dau la ten muc cua lenh [Lenh.CAI_DAT] (o [Duong.F_CHU]) va cung la ten truong trong
+ * hop/caidat ([Duong.D_CAI_DAT]), nhu moi muc cai dat khac. Hai ten sau chi tablet ghi vao
+ * hop/caidat, cho Bang dieu khien biet vi sao chua tiet kiem duoc.
+ */
+object CaiDatPin {
+    /** Boolean: bat tu dong tiet kiem pin. Luc moi cai la tat. */
+    const val BAT = "pinBat"
+
+    /** So phut man hinh tat roi moi bat Tiet kiem pin cua Android, mot trong [CAC_MUC_PHUT]. */
+    const val PHUT = "pinPhut"
+
+    /** So phut man hinh tat roi moi tam dung app, mot trong [CAC_MUC_PHUT_DUNG]. */
+    const val PHUT_DUNG = "pinPhutDung"
+
+    /** Danh sach ten goi app tam dung khi man hinh tat. */
+    const val APPS = "appTamDung"
+
+    /** Chi tablet ghi: tinh trang Jokers Permissions, mot trong cac chuoi JOKERS_ duoi day. */
+    const val JOKERS = "pinJokers"
+
+    /**
+     * Chi tablet ghi, Boolean: app Nop bai co quyen WRITE_SECURE_SETTINGS khong. Thieu thi khong bat
+     * duoc Tiet kiem pin cua Android (tam dung app thi van chay neu Jokers san sang).
+     */
+    const val CO_QUYEN = "pinCoQuyen"
+
+    const val JOKERS_CHUA_CAI = "chuaCai"
+
+    /** Da cai nhung chua chay: vua khoi dong may luc khong co Wi-Fi, hay tat ca hai kieu go loi. */
+    const val JOKERS_CHUA_CHAY = "chuaChay"
+    const val JOKERS_CHUA_CHO_PHEP = "chuaChoPhep"
+    const val JOKERS_SAN_SANG = "sanSang"
+
+    /** 0 la "Ngay" luc tat man hinh. Giong hang nut cua app Lich (anh Huy chon cung so). */
+    val CAC_MUC_PHUT = listOf(0, 1, 2, 5, 10, 15)
+    const val PHUT_MAC_DINH = 10
+
+    /** Khong co "Ngay": khoa may mot chut roi mo lai thi app khong bi tat bat lien tuc. */
+    val CAC_MUC_PHUT_DUNG = listOf(1, 2, 5, 10, 15)
+    const val PHUT_DUNG_MAC_DINH = 5
+}
+
 /** Trang thai cong, y het GateState ben tablet. */
 /**
  * Cac kieu lenh Bang dieu khien gui laptop (8/10/2026), xem [Duong.F_SO_LAN]. Laptop doc cung
