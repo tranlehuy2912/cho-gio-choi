@@ -239,6 +239,19 @@ object Duong {
      */
     const val D_SU_DUNG = "sudung"
 
+    /**
+     * Tinh trang vao tablet tu xa (5/11/2026), cho nhom "Truy cập từ xa" o the Cai dat. Chi
+     * tablet ghi, va chi sau mot lenh [Lenh.TU_XA]: ghi ngay luc nhan lenh, roi lan nua khi
+     * viec cham xong (Tailscale noi xong sau khoang 15 giay, go loi khong day thi doi Android
+     * vai giay roi tim cong). Ai bat tat ngay tren tablet thi document nay khong doi, nen Bang
+     * dieu khien go [TuXa.XEM] moi lan mo the Cai dat.
+     *
+     * Truong o muc "truong trong hop/tuxa" ben duoi, kem [F_CAP_NHAT_LUC] la luc tablet bat dau
+     * doc tinh trang do. Tablet ghi bang merge: lan ghi tinh trang khong dong vao [F_TIN], nen
+     * cau bao cua lenh vua bam con nguyen toi lenh sau.
+     */
+    const val D_TU_XA = "tuxa"
+
     const val LENH = "lenh"
     const val BAI = "bai"
     const val NHAT_KY = "nhatky"
@@ -546,6 +559,36 @@ object Duong {
      * nhin giong nhu hom nay khong ai dung may, nen ben doc phai noi ra.
      */
     const val F_DANG_GHI = "dangGhi"
+
+    // --- truong trong hop/tuxa ([D_TU_XA]) ---
+
+    /** Tablet co cai app Tailscale. */
+    const val F_CO_TAILSCALE = "coTailscale"
+
+    /** Ba Huy dang bat Tailscale bang lenh (Telegram hay Bang dieu khien), tablet thoi cat mang. */
+    const val F_TAILSCALE_THEO_LENH = "tailscaleTheoLenh"
+
+    /** Dia chi Tailscale cua tablet (dai 100.64.0.0/10). Rong la Tailscale chua noi. */
+    const val F_IP_TAILSCALE = "ipTailscale"
+    const val F_GO_LOI_USB = "goLoiUsb"
+    const val F_GO_LOI_KHONG_DAY = "goLoiKhongDay"
+
+    /** Cong go loi khong day, doi moi lan bat. 0 la tat hay chua tim duoc. */
+    const val F_CONG_GO_LOI = "congGoLoi"
+
+    /**
+     * App co quyen WRITE_SECURE_SETTINGS chua. Chua co thi khong bat tat duoc hai muc go loi;
+     * quyen nay chi cap duoc qua adb (`pm grant`), mot lan.
+     */
+    const val F_CO_QUYEN_GO_LOI = "coQuyenGoLoi"
+
+    /**
+     * Cau bao loi cua lenh [Lenh.TU_XA] vua bam: { [F_CHU], [F_LUC], [F_VIEC] la mot trong
+     * [TuXa] }. Chi co khi viec khong thanh (chua cai Tailscale, Tailscale khong noi, Android
+     * hien hop hoi go loi khong day...). Lenh sau, ke ca [TuXa.XEM], xoa no truoc khi lam: cau
+     * bao chi noi ve lan bam vua roi, tinh trang that da nam o cac truong tren.
+     */
+    const val F_TIN = "tin"
 }
 
 /**
@@ -749,6 +792,31 @@ object Lenh {
      * Chi Ba Huy go.
      */
     const val NGHI_HOC = "NGHIHOC"
+
+    /**
+     * Vao tablet tu xa (5/11/2026, anh Huy chot): bat tat Tailscale, go loi khong day, go loi
+     * USB tu nhom "Truy cập từ xa" o the Cai dat, giong ba lenh /tailscale, /goloi, /goloiusb
+     * ben Telegram. [Duong.F_CHU] la mot trong [TuXa]; "giaTri" true la bat, false la tat.
+     * [TuXa.XEM] thi khong doi gi, tablet chi ghi lai [Duong.D_TU_XA]: Bang dieu khien go no moi
+     * lan mo the Cai dat. Tablet khong tra loi vao traLoi cua hop/trangthai (cau do chi hien o
+     * the Gio choi) ma ghi vao [Duong.F_TIN] cua [Duong.D_TU_XA]. Chi Ba Huy go.
+     */
+    const val TU_XA = "TUXA"
+}
+
+/**
+ * Viec trong lenh [Lenh.TU_XA], o [Duong.F_CHU]. Ba chuoi dau trung ten lenh Telegram (bo dau
+ * gach cheo), de nhat ky va cau bao hai duong noi cung mot chu.
+ */
+object TuXa {
+    const val TAILSCALE = "tailscale"
+
+    /** Go loi khong day. */
+    const val GO_LOI = "goloi"
+    const val GO_LOI_USB = "goloiusb"
+
+    /** Chi hoi tinh trang, khong bat tat gi. */
+    const val XEM = "xem"
 }
 
 /** Trang thai cong, y het GateState ben tablet. */
