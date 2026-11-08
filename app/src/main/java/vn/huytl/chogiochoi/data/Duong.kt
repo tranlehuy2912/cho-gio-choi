@@ -319,6 +319,19 @@ object Duong {
     const val F_QUY_GIO = "quyGio"
 
     /**
+     * Phut tablet dang giu toi luc het gio ngu (8/11/2026, anh Huy chot), xem CongSang ben
+     * nop-bai. Map { cho, bai, luc }: "cho" la phut Ba Huy bam Cho trong gio ngu, "bai" la phut
+     * lam bai (Claude cham, cham lai, lam tren may) xong trong gio ngu, "luc" la luc tablet se
+     * cong. "luc" bang 0 la da qua gio ngu ma tablet chua cong duoc, lan xet sau cong tiep.
+     * Khong giu gi thi ca hai so bang 0.
+     *
+     * Truoc ngay do dien thoai chi biet phan giu qua cau tra loi lenh (hien mot lan roi mat),
+     * con the Gio choi van ghi "Khoá, chưa có phiên chơi nào": sang 8/11/2026 Ba Huy cho 30
+     * phut luc 6:45 ma khong thay dau vet gi tren the. Thieu truong nay la tablet ban cu.
+     */
+    const val F_GIU_SANG = "giuSang"
+
+    /**
      * Ten cac viec nha CHUA xong, dang danh sach chuoi.
      *
      * Co truong nay thi ben dien thoai moi giai thich duoc man hinh dang khoa: thieu
