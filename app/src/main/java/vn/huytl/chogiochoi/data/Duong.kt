@@ -97,6 +97,31 @@ object Duong {
     const val F_KHUNG_DANG_DAT = "khungDangDat"
 
     /**
+     * Gio di hoc theo tung thu (14/11/2026, anh Huy chot, xem KhoaHoc ben tablet): { "1".."7":
+     * { [F_BAT], [F_TU], [F_TOI] } }, thu theo Calendar.DAY_OF_WEEK (1 chu nhat, 2 thu hai ... 7 thu
+     * bay), phut tinh tu 0 gio, [F_TU] nho hon [F_TOI]. Ba cho dung chung ten nay: ten muc lenh
+     * [Lenh.CAI_DAT] va truong hop/caidat (gio di hoc cua tablet, tablet la nguon su that), va truong
+     * cua [LAPTOP] (gio di hoc cua laptop: Bang dieu khien ghi thang, laptop chi doc). Moi may mot bo
+     * rieng, anh Huy tu chinh cho giong nhau. Chua co thi ca hai may dung gia tri luc moi cai: thu
+     * hai, thu sau 8:45-17:00; thu ba, tu, nam, bay 11:00-17:00; chu nhat khong khoa.
+     */
+    const val F_KHOA_HOC = "khoaHoc"
+    const val F_BAT = "bat"
+
+    /** Gio di hoc laptop dang dat vao Timekpr-nExt, cung dang [F_KHOA_HOC]. Chi laptop ghi. */
+    const val F_KHOA_HOC_DANG_DAT = "khoaHocDangDat"
+
+    /**
+     * Ngay nghi khong khoa gio di hoc, tablet ghi vao [LAPTOP] (14/11/2026): { [F_CAC_KY]: [{ [F_TU],
+     * [F_DEN] }], [F_HET_NAM_HOC] }, ngay dang so yyyyMMdd. Gom cac ky nghi trong ban lich chua qua
+     * va ngay Ba Huy bam "Cho nghỉ học". Laptop khong doc duoc lich hoc lan trang thai tablet nen
+     * tablet chep sang, moi khi lich hay ngay nghi them doi. Chi tablet ghi.
+     */
+    const val F_NGHI_HOC = "nghiHoc"
+    const val F_CAC_KY = "cacKy"
+    const val F_HET_NAM_HOC = "hetNamHoc"
+
+    /**
      * Lenh Ba Huy gui laptop tu the Laptop (8/10/2026): laptop/{maNha}/lenh/{id} { [F_KIEU]
      * ([LenhLaptop]), [F_CHU] cau nhan, [F_SO_LAN] so lan doc, [F_AI], [F_TAO_LUC] }. Su kien nhu
      * [LENH] cua tablet: laptop nghe chung ket noi voi [CAP] (truoc 9/10/2026 hoi chung vong mot
